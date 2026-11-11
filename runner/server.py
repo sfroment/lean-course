@@ -20,11 +20,14 @@ ACCESS_CODE = os.environ.get("ACCESS_CODE", "")
 PORT = int(os.environ.get("PORT", "8000"))
 ORIGIN = os.environ.get("ALLOWED_ORIGIN", "https://sfroment.github.io")
 MAX_BODY = 64 * 1024
-TIMEOUT_S = 25
+TIMEOUT_S = 30
 
 
 def limits():
-    resource.setrlimit(resource.RLIMIT_AS, (1 << 30, 1 << 30))  # 1 GiB address space
+    # RLIMIT_AS must be generous: Lean reserves large virtual arenas and hangs
+    # if mmap starts failing (1 GiB is NOT enough). This caps virtual, not
+    # resident, memory — RSS stays small for course-sized files.
+    resource.setrlimit(resource.RLIMIT_AS, (6 << 30, 6 << 30))   # 6 GiB address space
     resource.setrlimit(resource.RLIMIT_CPU, (20, 20))           # 20 s CPU
 
 
