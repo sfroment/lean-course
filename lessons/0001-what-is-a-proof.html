@@ -46,7 +46,7 @@
 
 <h2>4. Hands-on: your first Lean file</h2>
 <p>Your playground lives in <code>playground/</code> (a tiny Lean project, no libraries yet — we add mathlib only when we start real math). Open <code>playground/Playground/Basic.lean</code> and read it, then run:</p>
-<pre><code>cd playground
+<pre data-lang="sh"><code>cd playground
 lake env lean Playground/Basic.lean</code></pre>
 <p>It contains:</p>
 <pre><code>#check 2 + 2        -- 2 + 2 : Nat
@@ -62,6 +62,27 @@ example : True := trivial</code></pre>
   <li><code>True</code> is the trivially-true proposition; <code>trivial</code> proves it.</li>
 </ul>
 <p>If the file runs with no errors, <strong>you have written two machine-checked proofs</strong>. Try breaking one on purpose: change <code>rfl</code> to <code>trivial</code> on the first example and re-run — watch Lean reject it. That rejection <em>is</em> the proof checker working.</p>
+
+<h2>Exercises ✏️</h2>
+<p>Do these in the <a href="../write.html?lesson=0001">✏️ Write pad</a> (pick the exercise in the dropdown) or in <code>playground/MyScratch.lean</code>. Try before opening the solution — then press <strong>▶ Run</strong> in the Write pad to execute your code on the site.</p>
+
+<h3>E1 — compute, then prove · <a href="../write.html?lesson=0001&amp;ex=1">✏️ write it</a></h3>
+<pre data-exercise="0001:1"><code>example : 6 * 7 = 42 := by
+  sorry</code></pre>
+<details><summary>Solution</summary><pre><code>example : 6 * 7 = 42 := by
+  rfl</code></pre></details>
+
+<h3>E2 — Nat subtraction computes · <a href="../write.html?lesson=0001&amp;ex=2">✏️</a></h3>
+<pre data-exercise="0001:2"><code>example : (10 : Nat) - 3 = 7 := by
+  sorry</code></pre>
+<details><summary>Solution</summary><pre><code>example : (10 : Nat) - 3 = 7 := by
+  rfl</code></pre></details>
+
+<h3>E3 — equality of propositions · <a href="../write.html?lesson=0001&amp;ex=3">✏️</a></h3>
+<pre data-exercise="0001:3"><code>example : True = True := by
+  sorry</code></pre>
+<details><summary>Solution</summary><pre><code>example : True = True := by
+  rfl</code></pre></details>
 
 <h2>5. Check yourself</h2>
 <div class="quiz" id="quiz1"></div>

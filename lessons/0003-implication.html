@@ -49,6 +49,29 @@ example (P Q R S : Prop) (hPQ : P → Q) (hQR : Q → R) (hRS : R → S) : P →
   intro hP
   exact hRS (hQR (hPQ hP))</code></pre>
 
+<h2>Exercises ✏️</h2>
+<p>Do these in the <a href="../write.html?lesson=0003">✏️ Write pad</a> or in <code>playground/MyScratch.lean</code>. Press <strong>▶ Run</strong> there to execute on the site.</p>
+
+<h3>E1 — flip the arrow · <a href="../write.html?lesson=0003&amp;ex=1">✏️ write it</a></h3>
+<pre data-exercise="0003:1"><code>example (P Q : Prop) (h : Q → P) (hQ : Q) : P := by
+  sorry</code></pre>
+<details><summary>Solution</summary><pre><code>example (P Q : Prop) (h : Q → P) (hQ : Q) : P := by
+  exact h hQ</code></pre></details>
+
+<h3>E2 — two hypotheses at once · <a href="../write.html?lesson=0003&amp;ex=2">✏️</a></h3>
+<pre data-exercise="0003:2"><code>example (P Q R : Prop) : (P → Q → R) → (P → Q) → P → R := by
+  sorry</code></pre>
+<details><summary>Solution</summary><pre><code>example (P Q R : Prop) : (P → Q → R) → (P → Q) → P → R := by
+  intro h hpq hp
+  exact h hp (hpq hp)</code></pre></details>
+
+<h3>E3 — compose two implications · <a href="../write.html?lesson=0003&amp;ex=3">✏️</a></h3>
+<pre data-exercise="0003:3"><code>example (P Q R : Prop) (hPQ : P → Q) (hQR : Q → R) : P → R := by
+  sorry</code></pre>
+<details><summary>Solution</summary><pre><code>example (P Q R : Prop) (hPQ : P → Q) (hQR : Q → R) : P → R := by
+  intro hp
+  exact hQR (hPQ hp)</code></pre></details>
+
 <h2>5. Check yourself</h2>
 <div class="quiz" id="quiz1"></div>
 <script type="application/json" data-quiz="quiz1">

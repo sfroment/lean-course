@@ -50,6 +50,27 @@ example (a b : Nat) (h : a = b) : a + 0 = b + 0 := by
 example (a b c d : Nat) (h : a = b) (h2 : c = d) : a + c = b + d := by
   rw [h, h2]</code></pre>
 
+<h2>Exercises ✏️</h2>
+<p>Do these in the <a href="../write.html?lesson=0007">✏️ Write pad</a> or in <code>playground/MyScratch.lean</code>. Press <strong>▶ Run</strong> there to execute on the site.</p>
+
+<h3>E1 — rewrite left to right · <a href="../write.html?lesson=0007&amp;ex=1">✏️ write it</a></h3>
+<pre data-exercise="0007:1"><code>example (a b : Nat) (h : a = b) : a + 1 = b + 1 := by
+  sorry</code></pre>
+<details><summary>Solution</summary><pre><code>example (a b : Nat) (h : a = b) : a + 1 = b + 1 := by
+  rw [h]</code></pre></details>
+
+<h3>E2 — rewrite right to left · <a href="../write.html?lesson=0007&amp;ex=2">✏️</a></h3>
+<pre data-exercise="0007:2"><code>example (a b : Nat) (h : a = b) : b + 0 = a + 0 := by
+  sorry</code></pre>
+<details><summary>Solution</summary><pre><code>example (a b : Nat) (h : a = b) : b + 0 = a + 0 := by
+  rw [← h]</code></pre></details>
+
+<h3>E3 — rewrite under two applications of f · <a href="../write.html?lesson=0007&amp;ex=3">✏️</a></h3>
+<pre data-exercise="0007:3"><code>example (f : Nat → Nat) (x y : Nat) (h : x = y) : f (f x) = f (f y) := by
+  sorry</code></pre>
+<details><summary>Solution</summary><pre><code>example (f : Nat → Nat) (x y : Nat) (h : x = y) : f (f x) = f (f y) := by
+  rw [h]</code></pre></details>
+
 <h2>5. Check yourself</h2>
 <div class="quiz" id="quiz1"></div>
 <script type="application/json" data-quiz="quiz1">

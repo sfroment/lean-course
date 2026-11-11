@@ -48,6 +48,9 @@
         sha256hex(SALT + input.value).then(function (h) {
           if (h === EXPECTED) {
             try { localStorage.setItem(KEY, h); } catch (ignore) {}
+            // keep the raw code in sessionStorage only (per-tab, gone on close) so the
+            // page can call the Lean runner with it as the shared secret
+            try { sessionStorage.setItem("lean-course-code", input.value); } catch (ignore2) {}
             location.href = base + "index.html";
           } else {
             err.textContent = "Wrong access code.";

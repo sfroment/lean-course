@@ -56,6 +56,29 @@ example (P Q : Prop) (h : P ∧ Q) : Q ∧ P := And.intro h.right h.left
 -- a classic: from P ∧ (P → Q) conclude Q (modus ponens)
 example (P Q : Prop) (h : P ∧ (P → Q)) : Q := h.right h.left</code></pre>
 
+<h2>Exercises ✏️</h2>
+<p>Do these in the <a href="../write.html?lesson=0004">✏️ Write pad</a> or in <code>playground/MyScratch.lean</code>. Press <strong>▶ Run</strong> there to execute on the site.</p>
+
+<h3>E1 — ∧ is commutative · <a href="../write.html?lesson=0004&amp;ex=1">✏️ write it</a></h3>
+<pre data-exercise="0004:1"><code>example (P Q : Prop) (h : P ∧ Q) : Q ∧ P := by
+  sorry</code></pre>
+<details><summary>Solution</summary><pre><code>example (P Q : Prop) (h : P ∧ Q) : Q ∧ P := by
+  exact And.intro h.right h.left</code></pre></details>
+
+<h3>E2 — ∧ implies ∨ · <a href="../write.html?lesson=0004&amp;ex=2">✏️</a></h3>
+<pre data-exercise="0004:2"><code>example (P Q : Prop) (h : P ∧ Q) : P ∨ Q := by
+  sorry</code></pre>
+<details><summary>Solution</summary><pre><code>example (P Q : Prop) (h : P ∧ Q) : P ∨ Q := by
+  exact Or.inl h.left</code></pre></details>
+
+<h3>E3 — ∨ is commutative (case analysis) · <a href="../write.html?lesson=0004&amp;ex=3">✏️</a></h3>
+<pre data-exercise="0004:3"><code>example (P Q : Prop) (h : P ∨ Q) : Q ∨ P := by
+  sorry</code></pre>
+<details><summary>Solution</summary><pre><code>example (P Q : Prop) (h : P ∨ Q) : Q ∨ P := by
+  cases h with
+  | inl hp => exact Or.inr hp
+  | inr hq => exact Or.inl hq</code></pre></details>
+
 <h2>5. Check yourself</h2>
 <div class="quiz" id="quiz1"></div>
 <script type="application/json" data-quiz="quiz1">

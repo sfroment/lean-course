@@ -60,6 +60,30 @@ example : ¬¬(2 = 2) → 2 = 2 := by
   sorry</code></pre>
 <p>(That last one is a teaser — in general <code>¬¬P → P</code> needs classical logic, but for <em>decidable</em> P you can do it constructively. We'll see how in Lesson 0006.)</p>
 
+<h2>Exercises ✏️</h2>
+<p>Do these in the <a href="../write.html?lesson=0005">✏️ Write pad</a> or in <code>playground/MyScratch.lean</code>. Press <strong>▶ Run</strong> there to execute on the site.</p>
+
+<h3>E1 — prove ¬¬P from P · <a href="../write.html?lesson=0005&amp;ex=1">✏️ write it</a></h3>
+<pre data-exercise="0005:1"><code>example (P : Prop) (h : P) : ¬¬P := by
+  sorry</code></pre>
+<details><summary>Solution</summary><pre><code>example (P : Prop) (h : P) : ¬¬P := by
+  intro hnp
+  exact hnp h</code></pre></details>
+
+<h3>E2 — contraposition · <a href="../write.html?lesson=0005&amp;ex=2">✏️</a></h3>
+<pre data-exercise="0005:2"><code>example (P Q : Prop) (h : P → Q) (hnq : ¬Q) : ¬P := by
+  sorry</code></pre>
+<details><summary>Solution</summary><pre><code>example (P Q : Prop) (h : P → Q) (hnq : ¬Q) : ¬P := by
+  intro hp
+  exact hnq (h hp)</code></pre></details>
+
+<h3>E3 — double negation, classically · <a href="../write.html?lesson=0005&amp;ex=3">✏️</a></h3>
+<pre data-exercise="0005:3"><code>example : ¬¬(2 = 2) → 2 = 2 := by
+  sorry</code></pre>
+<details><summary>Solution</summary><pre><code>example : ¬¬(2 = 2) → 2 = 2 := by
+  intro h
+  exact Classical.byContradiction (fun hnp => h hnp)</code></pre></details>
+
 <h2>6. Check yourself</h2>
 <div class="quiz" id="quiz1"></div>
 <script type="application/json" data-quiz="quiz1">

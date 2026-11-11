@@ -20,6 +20,11 @@
 <h1>✏️ Write with your Pencil</h1>
 <p class="lesson-meta">Draw <strong>one symbol</strong> on the pad — the recognizer suggests what it looks like. Tap a suggestion (or the palette) to insert it into the Lean code below. On iPad you can also write directly into the text area (Scribble).</p>
 
+<p class="candidates-label">Exercise to work on:</p>
+<select id="exercise-picker" class="tool-btn" style="width:100%">
+  <option value="">— free scratchpad (nothing loaded) —</option>
+</select>
+
 <div class="write-grid">
   <div>
     <div class="pad">
@@ -39,11 +44,13 @@
     <p class="candidates-label">Lean code (autosaved on this device):</p>
     <textarea id="scratch" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
     <div class="pad-buttons">
+      <button id="run" type="button">▶ Run Lean</button>
       <button id="copy" type="button">📋 Copy code</button>
       <button id="clear-editor" type="button">🗑 Clear</button>
       <button class="tool-btn" data-export type="button">⬇ Export my answers (JSON)</button>
     </div>
-    <p class="lesson-meta">Then check it for real: save as <code>playground/MyScratch.lean</code> and run <code>cd playground && lake env lean MyScratch.lean</code>.</p>
+    <pre id="run-output" class="run-output" hidden></pre>
+    <p class="lesson-meta">▶ Run executes your code on the site's Lean backend. You can also check locally: save as <code>playground/MyScratch.lean</code> and run <code>cd playground && lake env lean MyScratch.lean</code>.</p>
   </div>
 </div>
 
@@ -52,7 +59,32 @@
   <a href="lessons/0001-what-is-a-proof.html">Lesson 0001 →</a>
 </div>
 
+<script src="assets/config.js"></script>
+<script src="assets/exercises.js"></script>
 <script src="assets/site.js"></script>
 <script src="assets/handwriting.js"></script>
+<script src="assets/runner.js"></script>
+<script>
+/* Exercise picker: ?lesson=0003&ex=2 preselects; choosing loads the statement (with sorry) into the editor. */
+document.addEventListener("DOMContentLoaded", () => {
+  const picker = document.getElementById("exercise-picker");
+  const editor = document.getElementById("scratch");
+  const exs = window.EXERCISES || [];
+  for (const e of exs) {
+    const o = document.createElement("option");
+    o.value = e.id;
+    o.textContent = `Lesson ${e.lesson} · E${e.ex}`;
+    picker.appendChild(o);
+  }
+  function load(id) {
+    const e = exs.find((x) => x.id === id);
+    if (e) { editor.value = e.code + "\n"; try { localStorage.setItem("lean-course-scratch", editor.value); } catch (err) {} editor.focus(); }
+  }
+  const q = new URLSearchParams(location.search);
+  const want = q.get("lesson") && q.get("ex") ? `${q.get("lesson")}:${q.get("ex")}` : null;
+  if (want && exs.some((x) => x.id === want)) { picker.value = want; load(want); }
+  picker.addEventListener("change", () => load(picker.value));
+});
+</script>
 </body>
 </html>

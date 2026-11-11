@@ -55,6 +55,33 @@ example (P : Prop) (h : P) : P := by
   assumption</code></pre>
 <p>Goal R ← apply hQR → goal Q ← apply hPQ → goal P ← assumption finds hP. Backwards proof, three lines.</p>
 
+<h2>Exercises ✏️</h2>
+<p>Do these in the <a href="../write.html?lesson=0009">✏️ Write pad</a> or in <code>playground/MyScratch.lean</code>. Press <strong>▶ Run</strong> there to execute on the site.</p>
+
+<h3>E1 — have as a stepping stone · <a href="../write.html?lesson=0009&amp;ex=1">✏️ write it</a></h3>
+<pre data-exercise="0009:1"><code>example (P Q R : Prop) (hPQ : P → Q) (hQR : Q → R) (hP : P) : R := by
+  sorry</code></pre>
+<details><summary>Solution</summary><pre><code>example (P Q R : Prop) (hPQ : P → Q) (hQR : Q → R) (hP : P) : R := by
+  have hQ : Q := hPQ hP
+  exact hQR hQ</code></pre></details>
+
+<h3>E2 — calc a chain · <a href="../write.html?lesson=0009&amp;ex=2">✏️</a></h3>
+<pre data-exercise="0009:2"><code>example (a b c d : Nat) (h1 : a = b) (h2 : b = c) (h3 : c = d) : a = d := by
+  sorry</code></pre>
+<details><summary>Solution</summary><pre><code>example (a b c d : Nat) (h1 : a = b) (h2 : b = c) (h3 : c = d) : a = d := by
+  calc a = b := h1
+    _ = c := h2
+    _ = d := h3</code></pre></details>
+
+<h3>E3 — apply backwards · <a href="../write.html?lesson=0009&amp;ex=3">✏️</a></h3>
+<pre data-exercise="0009:3"><code>example (P Q R S : Prop) (hPQ : P → Q) (hQR : Q → R) (hRS : R → S) (hP : P) : S := by
+  sorry</code></pre>
+<details><summary>Solution</summary><pre><code>example (P Q R S : Prop) (hPQ : P → Q) (hQR : Q → R) (hRS : R → S) (hP : P) : S := by
+  apply hRS
+  apply hQR
+  apply hPQ
+  assumption</code></pre></details>
+
 <h2>6. Check yourself</h2>
 <div class="quiz" id="quiz1"></div>
 <script type="application/json" data-quiz="quiz1">

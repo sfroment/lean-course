@@ -57,8 +57,35 @@
 example (n : Nat) : 0 + n = n := by
   induction n with
   | zero => rfl
-  | succ n ih => rw [Nat.zero_add, ih]</code></pre>
-<p>(This one is easy because core's <code>Nat.zero_add</code> does the heavy lifting in the step. For a real workout, try <code>example (n : Nat) : n * 1 = n</code> or <code>2 * n = n + n</code> — ask me for hints!)</p>
+  | succ n ih => rw [Nat.zero_add]</code></pre>
+<p>(This one is easy because core's <code>Nat.zero_add</code> does the heavy lifting in the step. The real workouts are below.)</p>
+
+<h2>Exercises ✏️</h2>
+<p>Do these in the <a href="../write.html?lesson=0008">✏️ Write pad</a> or in <code>playground/MyScratch.lean</code>. Press <strong>▶ Run</strong> there to execute on the site.</p>
+
+<h3>E1 — n * 1 = n by induction · <a href="../write.html?lesson=0008&amp;ex=1">✏️ write it</a></h3>
+<pre data-exercise="0008:1"><code>example (n : Nat) : n * 1 = n := by
+  sorry</code></pre>
+<details><summary>Solution</summary><pre><code>example (n : Nat) : n * 1 = n := by
+  induction n with
+  | zero => rfl
+  | succ n ih => rw [Nat.succ_mul, ih]</code></pre></details>
+
+<h3>E2 — 0 * n = 0 by induction · <a href="../write.html?lesson=0008&amp;ex=2">✏️</a></h3>
+<pre data-exercise="0008:2"><code>example (n : Nat) : 0 * n = 0 := by
+  sorry</code></pre>
+<details><summary>Solution</summary><pre><code>example (n : Nat) : 0 * n = 0 := by
+  induction n with
+  | zero => rfl
+  | succ n ih => rw [Nat.zero_mul]</code></pre></details>
+
+<h3>E3 — stretch: commutativity of + · <a href="../write.html?lesson=0008&amp;ex=3">✏️</a></h3>
+<pre data-exercise="0008:3"><code>example (a b : Nat) : a + b = b + a := by
+  sorry</code></pre>
+<details><summary>Solution</summary><pre><code>example (a b : Nat) : a + b = b + a := by
+  induction a with
+  | zero => rw [Nat.zero_add, Nat.add_zero]
+  | succ a ih => rw [Nat.succ_add, ih, Nat.add_succ]</code></pre></details>
 
 <h2>5. Check yourself</h2>
 <div class="quiz" id="quiz1"></div>

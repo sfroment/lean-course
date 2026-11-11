@@ -49,6 +49,43 @@ example : add 2 3 = 5 := rfl</code></pre>
 example : square 3 = 9 := rfl</code></pre>
 <p>Check with <code>cd playground && lake env lean MyScratch.lean</code>. Then try <code>def compose (f g : Nat → Nat) (x : Nat) : Nat := f (g x)</code> and <code>#eval compose double double 5</code>. Or use the ✏️ <a href="../write.html">Pencil scratchpad</a> to write the code by hand first.</p>
 
+<h2>Exercises ✏️</h2>
+<p>Do these in the <a href="../write.html?lesson=0002">✏️ Write pad</a> or in <code>playground/MyScratch.lean</code>. Press <strong>▶ Run</strong> there to execute on the site.</p>
+
+<h3>E1 — define <code>square</code> · <a href="../write.html?lesson=0002&amp;ex=1">✏️ write it</a></h3>
+<pre data-exercise="0002:1"><code>def square (n : Nat) : Nat := n * n
+
+example : square 5 = 25 := by
+  sorry</code></pre>
+<details><summary>Solution</summary><pre><code>def square (n : Nat) : Nat := n * n
+
+example : square 5 = 25 := by
+  rfl</code></pre></details>
+
+<h3>E2 — three arguments · <a href="../write.html?lesson=0002&amp;ex=2">✏️</a></h3>
+<pre data-exercise="0002:2"><code>def addThree (a b c : Nat) : Nat := a + b + c
+
+example : addThree 1 2 3 = 6 := by
+  sorry</code></pre>
+<details><summary>Solution</summary><pre><code>def addThree (a b c : Nat) : Nat := a + b + c
+
+example : addThree 1 2 3 = 6 := by
+  rfl</code></pre></details>
+
+<h3>E3 — apply a function twice · <a href="../write.html?lesson=0002&amp;ex=3">✏️</a></h3>
+<pre data-exercise="0002:3"><code>def double (n : Nat) : Nat := n + n
+
+def twice (f : Nat → Nat) (x : Nat) : Nat := f (f x)
+
+example : twice double 3 = 12 := by
+  sorry</code></pre>
+<details><summary>Solution</summary><pre><code>def double (n : Nat) : Nat := n + n
+
+def twice (f : Nat → Nat) (x : Nat) : Nat := f (f x)
+
+example : twice double 3 = 12 := by
+  rfl</code></pre></details>
+
 <h2>5. Check yourself</h2>
 <div class="quiz" id="quiz1"></div>
 <script type="application/json" data-quiz="quiz1">
