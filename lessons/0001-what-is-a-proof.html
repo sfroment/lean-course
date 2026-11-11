@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 1 — What is a proof? What is Lean?</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<p class="lesson-kicker">Lesson 0001 · Foundations</p>
+<h1>What is a proof? What is Lean?</h1>
+<p class="lesson-meta">Tied to the <a href="../MISSION.md">mission</a>: prove and discover mathematics yourself, from the base. Estimated time: 20–30 minutes.</p>
+
+<div class="callout">
+  <p class="callout-title">The one idea of this lesson</p>
+  <p><strong>A proof in Lean is a program, and Lean re-checks it for you.</strong> You cannot hand-wave: a tiny trusted core (the <em>kernel</em>) verifies every single proof, every time. That is what makes "I'll prove it myself someday" a real possibility instead of a hope.</p>
+</div>
+
+<h2>1. Your mission, made concrete</h2>
+<p>You said it yourself: <em>knowing</em> Pythagoras' theorem is not the same as <em>having its proof</em>. In this workspace we rebuild mathematics from axioms in Lean — nothing is taken on faith. By the end you will not just use theorems, you will <strong>prove</strong> them, and eventually <strong>discover</strong> new ones.</p>
+
+<h2>2. What Lean is</h2>
+<p>Lean 4 is two things at once:</p>
+<ul>
+  <li>a <strong>programming language</strong> (you already know several — this one just also understands logic), and</li>
+  <li>a <strong>proof assistant</strong>: you write down a claim and a proof, and Lean checks the proof mechanically.</li>
+</ul>
+<p>The crucial design fact: the <strong>kernel</strong> — a small, simple, trusted piece of code — re-verifies every proof from scratch. Tactics and automation are just helpers that build proof terms; if they lie or bug out, the kernel catches it. There is an escape hatch called <code>sorries</code>… spelled <code>sorry</code>, and it always leaves a visible warning. You can't cheat silently.</p>
+
+<h2>3. Terms, types, propositions</h2>
+<p>Three ideas carry all of Lean:</p>
+<ol>
+  <li>Every <strong>term</strong> (every expression) has a <strong>type</strong>. <code>2 + 2</code> has type <code>Nat</code> (natural numbers).</li>
+  <li>A <strong>proposition</strong> like <code>2 + 2 = 4</code> is itself a term — its type is <code>Prop</code>, "the type of propositions".</li>
+  <li>A <strong>proof</strong> of a proposition <code>P</code> is just a term whose type is <code>P</code>. That's the whole trick. <code>Prop</code> is not special magic; it's a type like any other.</li>
+</ol>
+
+<h2>4. Hands-on: your first Lean file</h2>
+<p>Your playground lives in <code>playground/</code> (a tiny Lean project, no libraries yet — we add mathlib only when we start real math). Open <code>playground/Playground/Basic.lean</code> and read it, then run:</p>
+<pre><code>cd playground
+lake env lean Playground/Basic.lean</code></pre>
+<p>It contains:</p>
+<pre><code>#check 2 + 2        -- 2 + 2 : Nat
+#eval 2 + 2         -- 4
+
+example : 2 + 2 = 4 := rfl
+
+example : True := trivial</code></pre>
+<ul>
+  <li><code>#check e</code> asks "what is the type of <code>e</code>?" — here <code>Nat</code>.</li>
+  <li><code>#eval e</code> computes <code>e</code> — here <code>4</code>.</li>
+  <li><code>example : P := proof</code> states proposition <code>P</code> and gives its proof. <code>2 + 2 = 4</code> holds by <code>rfl</code> (<em>reflexivity of equality</em>): both sides compute to the same thing.</li>
+  <li><code>True</code> is the trivially-true proposition; <code>trivial</code> proves it.</li>
+</ul>
+<p>If the file runs with no errors, <strong>you have written two machine-checked proofs</strong>. Try breaking one on purpose: change <code>rfl</code> to <code>trivial</code> on the first example and re-run — watch Lean reject it. That rejection <em>is</em> the proof checker working.</p>
+
+<h2>5. Check yourself</h2>
+<div class="quiz" id="quiz1"></div>
+<script type="application/json" data-quiz="quiz1">
+{
+  "questions": [
+    {
+      "q": "In Lean, what exactly is a proof of a proposition P?",
+      "answers": ["A term whose type is P", "A comment in the code", "A separate .proof file", "A number from #eval"],
+      "correct": 0,
+      "explain": "A proof of P is any term whose type is P. Propositions are types; proofs are terms."
+    },
+    {
+      "q": "What does Lean's kernel do?",
+      "answers": ["Runs your program for you", "Downloads theorems online", "Re-checks every proof itself", "Deletes failing proofs quietly"],
+      "correct": 2,
+      "explain": "The kernel is the small trusted core that mechanically re-verifies every proof. Tactics only build proof terms; the kernel judges them."
+    },
+    {
+      "q": "In `example : 2 + 2 = 4 := rfl`, what does rfl mean?",
+      "answers": ["Recompiles the file", "Returns the first line", "A random first lemma", "Reflexivity of equality"],
+      "correct": 3,
+      "explain": "rfl proves P = P when both sides are definitionally equal — here both sides compute to 4."
+    },
+    {
+      "q": "What is the type of the expression `2 + 2 = 4`?",
+      "answers": ["Nat, the type of numbers", "Prop, the type of propositions", "Bool, the type of true/false", "String, the type of text"],
+      "correct": 1,
+      "explain": "Equalities are propositions, so `2 + 2 = 4 : Prop`. A proof of it would be a term of type `2 + 2 = 4`."
+    }
+  ]
+}
+</script>
+<script src="../assets/quiz.js"></script>
+
+<h2>6. Primary source to read next</h2>
+<div class="callout">
+  <p class="callout-title">Recommended reading</p>
+  <p>Read <strong>Chapter 1 ("Overview") and §2.1–2.2 of <a href="https://leanprover.github.io/theorem_proving_in_lean4/">Theorem Proving in Lean 4</a></strong> — the official free book. It explains the kernel/checker picture and <code>#eval</code> in more depth. Everything else in this workspace builds on it. More sources: <a href="../RESOURCES.md">RESOURCES.md</a>.</p>
+</div>
+
+<div class="ask">
+  <p><strong>Ask me anything.</strong> If any step above was unclear, or you broke something on purpose and want to understand the error message, just ask — that's what I'm here for. When you're done with this lesson, say so and we'll move to Lesson 2 (functions and the first logical connectives: <code>→</code>, <code>∧</code>).</p>
+</div>
+
+<div class="lesson-nav">
+  <a href="../MISSION.md">← Mission</a>
+  <a href="../reference/01-lean-core-cheatsheet.html">Reference: core commands →</a>
+</div>
+
+</body>
+</html>

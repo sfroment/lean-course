@@ -1,0 +1,162 @@
+/* Shared stylesheet for all lessons in this workspace. Every lesson links this file. */
+
+:root {
+  --ink: #1a1d23;
+  --muted: #5b6270;
+  --paper: #fdfcf9;
+  --accent: #4f46a8;      /* Lean-ish indigo */
+  --accent-soft: #eceafe;
+  --ok: #1a7f4b;
+  --ok-soft: #e4f5ec;
+  --bad: #b3372f;
+  --bad-soft: #fbeae8;
+  --line: #e4e1d8;
+  --code-bg: #f4f2ec;
+}
+
+* { box-sizing: border-box; }
+
+html { font-size: 18px; }
+
+body {
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 4rem;
+  max-width: 44rem;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  line-height: 1.6;
+}
+
+h1, h2, h3 {
+  font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  line-height: 1.25;
+  color: var(--ink);
+}
+h1 { font-size: 1.7rem; margin: 0 0 .25rem; }
+h2 { font-size: 1.2rem; margin: 2.2rem 0 .6rem; border-bottom: 1px solid var(--line); padding-bottom: .3rem; }
+h3 { font-size: 1.02rem; margin: 1.6rem 0 .4rem; }
+
+.lesson-kicker {
+  font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  font-size: .78rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: .4rem;
+}
+.lesson-meta { color: var(--muted); font-size: .88rem; margin-top: 0; }
+
+p { margin: .7rem 0; }
+ul, ol { padding-left: 1.4rem; }
+li { margin: .3rem 0; }
+
+a { color: var(--accent); }
+a:hover { text-decoration-thickness: 2px; }
+
+code, pre, .mono {
+  font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  font-size: .86em;
+}
+code {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: .08em .35em;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: .9rem 1.1rem;
+  overflow-x: auto;
+  line-height: 1.5;
+}
+pre code { background: none; border: none; padding: 0; font-size: .84rem; }
+
+pre .out { color: var(--muted); } /* expected output shown in comments */
+
+.callout {
+  border-left: 4px solid var(--accent);
+  background: var(--accent-soft);
+  border-radius: 0 8px 8px 0;
+  padding: .8rem 1.1rem;
+  margin: 1.2rem 0;
+}
+.callout p { margin: .3rem 0; }
+.callout .callout-title {
+  font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: .85rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--accent);
+}
+
+.ask {
+  border-left: 4px solid var(--ok);
+  background: var(--ok-soft);
+  border-radius: 0 8px 8px 0;
+  padding: .8rem 1.1rem;
+  margin: 1.6rem 0;
+}
+
+/* ---- quiz component (assets/quiz.js) ---- */
+.quiz { margin: 1.2rem 0 1.8rem; }
+.quiz-progress {
+  font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  font-size: .8rem; color: var(--muted); margin-bottom: .8rem;
+}
+.quiz-question {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  margin: 0 0 1.1rem;
+  background: #fff;
+}
+.quiz-question .q-text { font-weight: 600; margin: 0 0 .7rem; }
+.quiz-question .q-num {
+  font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted); display: block; margin-bottom: .25rem;
+}
+.quiz-answers { display: grid; gap: .45rem; }
+.quiz-answers button {
+  font: inherit;
+  text-align: left;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  border-radius: 8px;
+  padding: .5rem .8rem;
+  cursor: pointer;
+  transition: border-color .12s, background .12s;
+}
+.quiz-answers button:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-soft); }
+.quiz-answers button:disabled { cursor: default; opacity: .75; }
+.quiz-answers button.correct { border-color: var(--ok); background: var(--ok-soft); opacity: 1; font-weight: 600; }
+.quiz-answers button.wrong { border-color: var(--bad); background: var(--bad-soft); opacity: 1; }
+.quiz-explain { font-size: .9rem; color: var(--muted); margin: .6rem 0 0; display: none; }
+.quiz-explain.show { display: block; }
+.quiz-done {
+  font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  font-weight: 600; color: var(--ok); margin-top: .4rem; display: none;
+}
+
+/* ---- tables (reference docs) ---- */
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: .92rem; }
+th, td { border: 1px solid var(--line); padding: .45rem .7rem; text-align: left; vertical-align: top; }
+th { background: var(--code-bg); font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif; font-size: .8rem; }
+
+/* ---- nav footer ---- */
+.lesson-nav {
+  margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--line);
+  display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif; font-size: .88rem;
+}
+.lesson-nav .dim { color: var(--muted); }
+
+@media print {
+  body { max-width: none; font-size: 11pt; }
+  .quiz-answers button { cursor: default; }
+  a { color: var(--ink); text-decoration: none; }
+}

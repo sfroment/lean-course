@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reference — Lean core cheat sheet (Lesson 1)</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<p class="lesson-kicker">Reference</p>
+<h1>Lean core cheat sheet</h1>
+<p class="lesson-meta">The compressed essence of <a href="../lessons/0001-what-is-a-proof.html">Lesson 1</a>. Designed for quick reference and printing. New rows get added as lessons land.</p>
+
+<h2>Big picture</h2>
+<table>
+  <tr><th>Concept</th><th>Meaning</th></tr>
+  <tr><td><strong>term</strong></td><td>Any expression, e.g. <code>2 + 2</code>, <code>rfl</code></td></tr>
+  <tr><td><strong>type</strong></td><td>The "kind" of a term. Every term has exactly one type</td></tr>
+  <tr><td><code>Nat</code></td><td>Type of natural numbers: <code>0, 1, 2, …</code></td></tr>
+  <tr><td><code>Prop</code></td><td>Type of propositions, e.g. <code>2 + 2 = 4</code>, <code>True</code></td></tr>
+  <tr><td><strong>proposition</strong></td><td>A term of type <code>Prop</code> — a statement that may be true</td></tr>
+  <tr><td><strong>proof</strong></td><td>A term whose type is the proposition. No separate notion!</td></tr>
+  <tr><td><strong>kernel</strong></td><td>Lean's small trusted core; re-checks every proof mechanically</td></tr>
+  <tr><td><code>sorry</code></td><td>Escape hatch that admits a proof — always leaves a warning, never silent</td></tr>
+</table>
+
+<h2>Commands</h2>
+<table>
+  <tr><th>Command</th><th>What it does</th><th>Example output</th></tr>
+  <tr><td><code>#check e</code></td><td>Print the type of <code>e</code></td><td><code>#check 2 + 2</code> → <code>2 + 2 : Nat</code></td></tr>
+  <tr><td><code>#eval e</code></td><td>Compute <code>e</code></td><td><code>#eval 2 + 2</code> → <code>4</code></td></tr>
+  <tr><td><code>example : P := proof</code></td><td>State proposition <code>P</code>, prove it with <code>proof</code></td><td><code>example : 2 + 2 = 4 := rfl</code></td></tr>
+  <tr><td><code>rfl</code></td><td>Proves <code>a = a</code> when both sides are definitionally equal</td><td>closes <code>2 + 2 = 4</code></td></tr>
+  <tr><td><code>trivial</code></td><td>Proves <code>True</code> (and other trivially-true goals)</td><td><code>example : True := trivial</code></td></tr>
+</table>
+
+<h2>Running your code</h2>
+<pre><code>cd playground
+lake env lean Playground/Basic.lean   # check the file, prints #check/#eval output</code></pre>
+
+<div class="lesson-nav">
+  <a href="../lessons/0001-what-is-a-proof.html">← Lesson 1</a>
+  <a href="../MISSION.md">Mission</a>
+</div>
+
+</body>
+</html>
