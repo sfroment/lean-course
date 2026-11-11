@@ -7,3 +7,6 @@
 - Learning solo for now; Lean Zulip later when he wants community feedback.
 - Quiz design: all answer options the same length, correct position varies per question, immediate feedback.
 - Quick check loop for him: `cd playground && lake env lean Playground/Basic.lean` (see `lean-check` habits from other repos if useful).
+- SITE: deployed at https://sfroment.github.io/lean-course/ (GitHub repo sfroment/lean-course, Pages source branch `course-site` — the pre-push guard blocks agents pushing to main). Root of this repo IS the website root. PWA: manifest + sw.js + apple-touch-icon; add to home screen on iOS. Scratchpad = write.html (assets/handwriting.js: point-cloud recognizer, ~110 glyphs; palette fallback; editor autosaves to localStorage).
+- Pregeneration workflow: add lesson HTML to lessons/, register in lessons/manifest.json, run `python3 scripts/verify-lessons.py` (every ```lean block must compile under core Lean), then commit+push to course-site — Pages rebuilds in ~30s.
+- Phase B+ will need mathlib in playground/ (lakefile dep) — not yet added.
