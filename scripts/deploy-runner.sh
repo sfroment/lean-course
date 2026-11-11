@@ -11,12 +11,16 @@ koyeb service create run --app lean-course-runner \
   --git-builder docker --git-docker-dockerfile runner/Dockerfile \
   --port 8000:http --route /:8000 \
   --env "ACCESS_CODE={{secret.lean-course-access-code}}" --env PORT=8000 \
-  --instance-type nano 2>/dev/null \
+  --instance-type medium 2>/dev/null \
   || koyeb service update run --app lean-course-runner \
        --git github.com/sfroment/lean-course --git-branch course-site \
        --git-builder docker --git-docker-dockerfile runner/Dockerfile \
        --port 8000:http --route /:8000 \
-       --env "ACCESS_CODE={{secret.lean-course-access-code}}" --env PORT=8000
+       --env "ACCESS_CODE={{secret.lean-course-access-code}}" --env PORT=8000 \
+       --instance-type medium
+# NOTE: instance must be >= medium (2 GiB): Lean fails to create threads under a
+# 1 GiB cgroup memory limit ("failed to create thread: Resource temporarily unavailable").
+# Never set RLIMIT_AS in server.py — it hangs Lean instead.
 echo "--- waiting for HEALTHY ---"
 for i in $(seq 1 40); do
   sleep 15

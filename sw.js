@@ -1,6 +1,6 @@
 /* Service worker: cache-first for same-origin GETs, runtime caching for the rest.
  * Lets the course work offline once loaded (iOS "Add to Home Screen" supported). */
-const CACHE = "lean-course-v3";
+const CACHE = "lean-course-v4";
 const PRECACHE = [
   "./",
   "./index.html",
@@ -12,6 +12,9 @@ const PRECACHE = [
   "./assets/quiz.js",
   "./assets/handwriting.js",
   "./assets/gate.js",
+  "./assets/config.js",
+  "./assets/exercises.js",
+  "./assets/runner.js",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
   "./icons/apple-touch-icon.png",

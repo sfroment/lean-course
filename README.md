@@ -19,6 +19,15 @@ python3 scripts/set-gate-code.py "new code"   # or no arg for a random one
 
 This is client-side gating on a static site — it stops casual visitors and search engines, not a determined reader of the public repo. For hard protection: make the repo private (needs a paid GitHub plan for Pages), put it behind Cloudflare Access on a custom domain, or host it with basic auth (e.g. Koyeb).
 
+## ▶ Running Lean on the site
+
+The ✏️ Write pad has a **▶ Run Lean** button: it POSTs your code to a small backend
+(`runner/`, deployed on Koyeb as app `lean-course-runner`, built from this repo's
+`course-site` branch). It runs real Lean 4.35.0 (core only) with CPU/timeout limits
+and returns output + errors inline. Auth = the same single access code
+(`X-Access-Code` header, kept in sessionStorage only). Redeploy: `scripts/deploy-runner.sh`
+(instance must be ≥ medium/2 GiB — Lean can't start threads under 1 GiB).
+
 ## 📥 Review loop (your answers → my review → running your Lean)
 
 Everything you do is stored on your device (localStorage): quiz answers + correctness, lessons marked done, pencil scratchpad. Press **⬇ Export my answers (JSON)** on the index or scratchpad, then drop the `lean-answers-*.json` in our chat or commit it under `my-data/`. The teacher then reviews your errors and runs your Lean for real in `playground/` (`lake env lean <file>`), writing notes under `reviews/`.
