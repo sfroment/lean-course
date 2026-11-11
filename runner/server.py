@@ -62,11 +62,26 @@ class Handler(BaseHTTPRequestHandler):
                 info["version"] = {"err": str(e)}
             try:
                 r = subprocess.run(
-                    ["sh", "-c", "ulimit -a; echo pids.max=$(cat /sys/fs/cgroup/pids.max 2>/dev/null); echo memory.max=$(cat /sys/fs/cgroup/memory.max 2>/dev/null); nproc"],
+                    ["sh", "-c", "ulimit -a; echo pids.max=$(cat /sys/fs/cgroup/pids.max /sys/fs/cgroup/pids/pids.max 2>/dev/null); echo memory.max=$(cat /sys/fs/cgroup/memory.max /sys/fs/cgroup/memory/memory.limit_in_bytes 2>/dev/null); echo threads-max=$(cat /proc/sys/kernel/threads-max); nproc; grep -i seccomp /proc/self/status"],
                     capture_output=True, text=True, timeout=10)
                 info["env"] = r.stdout
             except Exception as e:
                 info["env"] = {"err": str(e)}
+            try:
+                import threading
+                ok = []
+                def w(): ok.append(1)
+                t = threading.Thread(target=w); t.start(); t.join()
+                info["python_thread"] = "ok" if ok else "FAILED"
+            except Exception as e:
+                info["python_thread"] = "err: " + str(e)
+            for label, env_extra in [("plain", {}), ("rseq0", {"GLIBC_TUNABLES": "glibc.pthread.rseq=0"})]:
+                try:
+                    r = subprocess.run(["lean", "--version"], capture_output=True, text=True, timeout=20,
+                                       env={**os.environ, **env_extra})
+                    info["lean_" + label] = {"rc": r.returncode, "out": (r.stdout + r.stderr)[:200]}
+                except Exception as e:
+                    info["lean_" + label] = {"err": str(e)}
             self._json(200, info)
         else:
             self._json(404, {"error": "not found"})
