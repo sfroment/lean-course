@@ -8,6 +8,8 @@ RUN apt-get update \
 RUN curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
       | sh -s -- -y --default-toolchain leanprover/lean4:v4.35.0
 ENV PATH="/root/.elan/bin:${PATH}"
+# fail the build loudly if the toolchain is broken
+RUN lean --version
 
 WORKDIR /app
 COPY runner/server.py /app/server.py

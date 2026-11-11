@@ -24,10 +24,8 @@ TIMEOUT_S = 30
 
 
 def limits():
-    # RLIMIT_AS must be generous: Lean reserves large virtual arenas and hangs
-    # if mmap starts failing (1 GiB is NOT enough). This caps virtual, not
-    # resident, memory — RSS stays small for course-sized files.
-    resource.setrlimit(resource.RLIMIT_AS, (6 << 30, 6 << 30))   # 6 GiB address space
+    # Only cap CPU time; do NOT cap address space — Lean's mmap/thread setup
+    # fails with EAGAIN under RLIMIT_AS. The Koyeb instance size bounds memory.
     resource.setrlimit(resource.RLIMIT_CPU, (20, 20))           # 20 s CPU
 
 
