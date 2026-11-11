@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#4f46a8">
+<title>Lesson 0002 — Functions and the arrow →</title>
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="icon" href="../icons/icon-192.png">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<p class="lesson-kicker">Lesson 0002 · Phase A — Foundations</p>
+<h1>Functions and the arrow →</h1>
+<p class="lesson-meta">Builds on <a href="0001-what-is-a-proof.html">Lesson 0001</a>. 20–30 minutes.</p>
+
+<div class="callout">
+  <p class="callout-title">The one idea</p>
+  <p><strong>In Lean, <code>P → Q</code> (logical implication) is the same arrow as a function type <code>Nat → Nat</code>.</strong> There is only one arrow. That single fact unifies "functions" and "proofs of implications" — and it's why Lean can check both with one kernel.</p>
+</div>
+
+<h2>1. Defining a function: <code>def</code></h2>
+<pre><code>def double (n : Nat) : Nat := n + n
+
+#check double        -- double : Nat → Nat
+#check double 21     -- double 21 : Nat
+#eval double 21      -- 42</code></pre>
+<p><code>def name (args) : ReturnType := body</code> defines a named function. Application is just juxtaposition: <code>double 21</code>, no parentheses needed.</p>
+
+<h2>2. Anonymous functions: <code>fun</code></h2>
+<pre><code>example : (fun x : Nat => x + 1) 5 = 6 := rfl
+example : (fun (x y : Nat) => x + y) 2 3 = 5 := rfl</code></pre>
+<p><code>fun x => body</code> is a function literal (like a lambda). Multi-argument: <code>fun (x y : Nat) => x + y</code>.</p>
+
+<h2>3. Functions are values</h2>
+<pre><code>def add (a b : Nat) : Nat := a + b
+example : add 2 3 = 5 := rfl</code></pre>
+<p>Functions have types (<code>add : Nat → Nat → Nat</code> — the arrow associates to the right), can be passed around, and are checked like any other term. A proof that <code>add 2 3 = 5</code> is still just <code>rfl</code>, because both sides compute to the same number.</p>
+
+<h2>4. Try it yourself</h2>
+<p>In <code>playground/</code>, create <code>MyScratch.lean</code> and write:</p>
+<pre><code>def square (n : Nat) : Nat := n * n
+example : square 3 = 9 := rfl</code></pre>
+<p>Check with <code>cd playground && lake env lean MyScratch.lean</code>. Then try <code>def compose (f g : Nat → Nat) (x : Nat) : Nat := f (g x)</code> and <code>#eval compose double double 5</code>. Or use the ✏️ <a href="../write.html">Pencil scratchpad</a> to write the code by hand first.</p>
+
+<h2>5. Check yourself</h2>
+<div class="quiz" id="quiz1"></div>
+<script type="application/json" data-quiz="quiz1">
+{
+  "questions": [
+    {
+      "q": "After `def double (n : Nat) := n + n`, what is the type of `double`?",
+      "answers": ["A Prop to prove", "A Nat value", "The function type Nat → Nat", "A tactic to run"],
+      "correct": 2,
+      "explain": "double : Nat → Nat — it maps a Nat to a Nat. The arrow is the function-type constructor."
+    },
+    {
+      "q": "What does `(fun x : Nat => x + 1) 5` compute to with #eval?",
+      "answers": ["The function itself", "6", "5", "A type error"],
+      "correct": 1,
+      "explain": "Applying the anonymous function to 5 gives 5 + 1 = 6."
+    },
+    {
+      "q": "Which keyword defines a named function?",
+      "answers": ["lemma", "def", "fun", "let"],
+      "correct": 1,
+      "explain": "def double (n : Nat) : Nat := n + n. (`fun` is the anonymous version.)"
+    },
+    {
+      "q": "What is the difference between #check and #eval?",
+      "answers": ["#check prints the type, #eval computes the value", "#check compiles, #eval deletes the file", "#check runs proofs, #eval prints types", "They are identical commands"],
+      "correct": 0,
+      "explain": "#check e : type of e. #eval e : the computed value of e."
+    }
+  ]
+}
+</script>
+<script src="../assets/quiz.js"></script>
+
+<h2>6. Primary source</h2>
+<div class="callout">
+  <p class="callout-title">Recommended reading</p>
+  <p><a href="https://leanprover.github.io/theorem_proving_in_lean4/Dependent-Type-Theory/"><strong>Theorem Proving in Lean 4 — Dependent Type Theory</strong></a>: functions, <code>→</code>, and how types are themselves terms. Read alongside this lesson.</p>
+</div>
+
+<div class="ask">
+  <p><strong>Ask me anything</strong> — e.g. why <code>Nat → Nat → Nat</code> needs no parentheses, or what happens if you apply <code>double</code> to a <code>Prop</code>. Ready? Say the word and we go to Lesson 0003: using <code>→</code> for actual proofs.</p>
+</div>
+
+<p><button class="mark-done" data-mark-done="0002">Mark lesson 0002 as done</button></p>
+
+<div class="lesson-nav">
+  <a href="0001-what-is-a-proof.html">← 0001 What is a proof?</a>
+  <span class="dim"><a href="../index.html">Index</a></span>
+  <a href="0003-implication.html">0003 Implication →</a>
+</div>
+
+<script src="../assets/site.js"></script>
+</body>
+</html>

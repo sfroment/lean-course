@@ -1,0 +1,23 @@
+{
+  "phases": [
+    { "id": "A", "name": "Phase A — Lean & logic from the base (core Lean, no mathlib yet)" },
+    { "id": "B", "name": "Phase B — Mathlib foundations: sets, functions, relations (MIL)" },
+    { "id": "C", "name": "Phase C — Numbers: divisibility, primes, modular arithmetic" },
+    { "id": "D", "name": "Phase D — Algebra: groups, rings, fields, linear algebra" },
+    { "id": "E", "name": "Phase E — Analysis: real numbers, limits, continuity, calculus" },
+    { "id": "F", "name": "Phase F — Geometry & topology" },
+    { "id": "G", "name": "Phase G — Category theory" },
+    { "id": "H", "name": "Phase H — Discovery: your own theorems" }
+  ],
+  "lessons": [
+    { "n": "0001", "slug": "what-is-a-proof", "title": "What is a proof? What is Lean?", "phase": "A" },
+    { "n": "0002", "slug": "functions-and-the-arrow", "title": "Functions and the arrow →", "phase": "A" },
+    { "n": "0003", "slug": "implication", "title": "Implication: proving P → Q", "phase": "A" },
+    { "n": "0004", "slug": "and-or", "title": "Conjunction ∧ and disjunction ∨", "phase": "A" },
+    { "n": "0005", "slug": "negation-false-classical", "title": "Negation ¬, False, and classical logic", "phase": "A" },
+    { "n": "0006", "slug": "decide", "title": "Decidable propositions and decide", "phase": "A" },
+    { "n": "0007", "slug": "rewriting", "title": "Rewriting with rw and the equality API", "phase": "A" },
+    { "n": "0008", "slug": "nat-induction", "title": "Natural numbers and induction", "phase": "A" },
+    { "n": "0009", "slug": "tactic-toolkit", "title": "Tactic toolkit: have, calc, apply, show, assumption", "phase": "A" }
+  ]
+}

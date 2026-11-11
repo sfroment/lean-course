@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#4f46a8">
+<title>Lesson 0009 — Tactic toolkit: have, calc, apply, show, assumption</title>
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="icon" href="../icons/icon-192.png">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<p class="lesson-kicker">Lesson 0009 · Phase A — Foundations</p>
+<h1>Tactic toolkit: <code>have</code>, <code>calc</code>, <code>apply</code>, <code>show</code>, <code>assumption</code></h1>
+<p class="lesson-meta">Builds on <a href="0008-nat-induction.html">Lesson 0008</a>. 20–30 minutes. This lesson is a toolbox, not a new concept.</p>
+
+<h2>1. <code>have</code> — prove a stepping stone</h2>
+<pre><code>example (P Q R : Prop) (hPQ : P → Q) (hQR : Q → R) (hP : P) : R := by
+  have hQ : Q := hPQ hP
+  exact hQR hQ</code></pre>
+<p><code>have hQ : Q := proof</code> adds a new hypothesis with a proof, exactly like in a paper proof ("we first show Q…").</p>
+
+<h2>2. <code>calc</code> — chain equalities readably</h2>
+<pre><code>example (a b c : Nat) (h : a = b) (h2 : b = c) : a = c := by
+  calc a = b := h
+    _ = c := h2</code></pre>
+<p><code>calc</code> writes a chain of (in)equalities, each justified by a proof on the right. <code>_</code> means "the right-hand side of the previous step".</p>
+
+<h2>3. <code>apply</code> — work backwards</h2>
+<pre><code>example (P Q : Prop) (h : P → Q) (hP : P) : Q := by
+  apply h
+  exact hP</code></pre>
+<p><code>apply h</code> on goal <code>Q</code> with <code>h : P → Q</code> replaces the goal by <code>P</code> — backwards reasoning: "to prove Q, it suffices to prove P".</p>
+
+<h2>4. <code>assumption</code> and <code>show</code></h2>
+<pre><code>example (P Q : Prop) (h : P → Q) (hP : P) : Q := by
+  apply h
+  assumption
+
+example (P : Prop) (h : P) : P := by
+  show P
+  assumption</code></pre>
+<p><code>assumption</code> closes the goal if some hypothesis has exactly that type. <code>show P</code> restates the goal (a readability/documentation move; fails if it doesn't match).</p>
+
+<h2>5. Putting it together</h2>
+<pre><code>example (P Q R : Prop) (hPQ : P → Q) (hQR : Q → R) (hP : P) : R := by
+  apply hQR
+  apply hPQ
+  assumption</code></pre>
+<p>Goal R ← apply hQR → goal Q ← apply hPQ → goal P ← assumption finds hP. Backwards proof, three lines.</p>
+
+<h2>6. Check yourself</h2>
+<div class="quiz" id="quiz1"></div>
+<script type="application/json" data-quiz="quiz1">
+{
+  "questions": [
+    {
+      "q": "What does `have hQ : Q := hPQ hP` do?",
+      "answers": ["Adds hQ : Q to the context, with the given proof", "Changes the goal to Q", "Deletes hP", "Proves the whole theorem"],
+      "correct": 0,
+      "explain": "have introduces a new local hypothesis — a stepping stone, like in a paper proof."
+    },
+    {
+      "q": "In `calc a = b := h  _ = c := h2`, what does `_` stand for?",
+      "answers": ["The previous left side a", "The previous right side, b", "A wildcard hypothesis", "The whole goal"],
+      "correct": 1,
+      "explain": "_ refers to the right-hand side of the previous calc step."
+    },
+    {
+      "q": "`apply h` with `h : P → Q` on goal `Q` turns the goal into…?",
+      "answers": ["P", "Q → P", "False", "Nothing — it closes the goal"],
+      "correct": 0,
+      "explain": "Backwards reasoning: to prove Q it suffices to prove P. New goal: P."
+    },
+    {
+      "q": "What does `assumption` do?",
+      "answers": ["Assumes the goal is an axiom", "Closes the goal if a context hypothesis matches it exactly", "Introduces the goal as a hypothesis", "Runs decide"],
+      "correct": 1,
+      "explain": "assumption searches the context for a hypothesis whose type is exactly the goal."
+    }
+  ]
+}
+</script>
+<script src="../assets/quiz.js"></script>
+
+<h2>7. Primary source & where next</h2>
+<div class="callout">
+  <p class="callout-title">Recommended reading</p>
+  <p><a href="https://leanprover.github.io/theorem_proving_in_lean4/Tactics/"><strong>TPL4 — Tactics</strong></a> is the full tactic reference; skim it now, return to it forever. Phase A is complete after this — next we add <strong>mathlib</strong> to the playground and start <a href="../ROADMAP.md">Phase B</a>: sets, functions, relations (following <a href="https://leanprover-community.github.io/mathematics_in_lean/">Mathematics in Lean</a>).</p>
+</div>
+
+<div class="ask">
+  <p><strong>Ask me anything</strong> — you've now got the core toolkit: functions, →, ∧, ∨, ¬, decide, rw, induction, have/calc/apply. Ask me to quiz you on any of them, or to set you a small original theorem to prove. 🎉</p>
+</div>
+
+<p><button class="mark-done" data-mark-done="0009">Mark lesson 0009 as done</button></p>
+
+<div class="lesson-nav">
+  <a href="0008-nat-induction.html">← 0008 Nat induction</a>
+  <span class="dim"><a href="../index.html">Index</a> · <a href="../ROADMAP.md">Roadmap</a></span>
+  <span class="dim">Phase B next →</span>
+</div>
+
+<script src="../assets/site.js"></script>
+</body>
+</html>

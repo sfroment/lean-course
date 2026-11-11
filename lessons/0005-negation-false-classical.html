@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#4f46a8">
+<title>Lesson 0005 — Negation ¬, False, and classical logic</title>
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="icon" href="../icons/icon-192.png">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<p class="lesson-kicker">Lesson 0005 · Phase A — Foundations</p>
+<h1>Negation ¬, False, and classical logic</h1>
+<p class="lesson-meta">Builds on <a href="0004-and-or.html">Lesson 0004</a>. 20–30 minutes.</p>
+
+<div class="callout">
+  <p class="callout-title">The one idea</p>
+  <p><strong><code>¬P</code> is defined as <code>P → False</code>: "not P" means "P leads to a contradiction".</strong> And from <code>False</code> anything follows. Up to here everything was constructive; now we add the classical axioms.</p>
+</div>
+
+<h2>1. ¬ is just → False</h2>
+<pre><code>#check Not   -- Not (a : Prop) : Prop
+
+example (P : Prop) (h : ¬P) (hP : P) : False := h hP</code></pre>
+<p><code>¬P</code> unfolds to <code>P → False</code>. So a proof of <code>¬P</code> applied to a proof of <code>P</code> yields <code>False</code> — the contradiction.</p>
+
+<h2>2. Ex falso: from False, anything</h2>
+<pre><code>example (P : Prop) (h : False) : P := False.elim h</code></pre>
+<p><code>False</code> has no proofs (that's the point), but if you ever had one, <code>False.elim</code> derives any proposition from it. In logic this is called <em>ex falso quodlibet</em>.</p>
+
+<h2>3. A useful pattern: contraposition</h2>
+<pre><code>example (P Q : Prop) : (P → ¬Q) → Q → ¬P := fun h hQ hP => h hP hQ</code></pre>
+<p>Read it: if P implies not-Q, then Q implies not-P. Unfold the ¬'s and it's just function composition again.</p>
+
+<h2>4. Classical logic: the law of excluded middle</h2>
+<pre><code>#check Classical.em   -- Classical.em (p : Prop) : p ∨ ¬p
+
+example (P : Prop) : P ∨ ¬P := Classical.em P
+
+#check Classical.byContradiction   -- (¬p → False) → p
+
+example (P : Prop) (h : ¬¬P) : P := Classical.byContradiction (fun hnp => h hnp)</code></pre>
+<p>Everything so far was <strong>constructive</strong> — every proof built an actual witness. Classical logic adds <code>Classical.em</code>: every proposition is either true or false, no third option. With it, double negation elimination (<code>¬¬P → P</code>) follows via <code>Classical.byContradiction</code>. Lean accepts these because they're declared as <em>axioms</em> (ultimately resting on <code>Classical.choice</code>) — the kernel tracks this: you can always ask <code>#print axioms</code> which axioms a theorem used. Nothing is hidden.</p>
+
+<h2>5. Try it yourself</h2>
+<pre><code>-- In playground/MyScratch.lean.
+-- Classically, double-negation elimination always works:
+example : ¬¬(2 = 2) → 2 = 2 := fun h => Classical.byContradiction (fun hnp => h hnp)
+
+-- Teaser (leave as sorry for now): prove the same WITHOUT Classical,
+-- using that 2 = 2 is decidable. Hint from Lesson 0006: decide.
+example : ¬¬(2 = 2) → 2 = 2 := by
+  sorry</code></pre>
+<p>(That last one is a teaser — in general <code>¬¬P → P</code> needs classical logic, but for <em>decidable</em> P you can do it constructively. We'll see how in Lesson 0006.)</p>
+
+<h2>6. Check yourself</h2>
+<div class="quiz" id="quiz1"></div>
+<script type="application/json" data-quiz="quiz1">
+{
+  "questions": [
+    {
+      "q": "What is `¬P` definitionally equal to?",
+      "answers": ["P → False", "False → P", "P ∧ False", "¬ is primitive, not defined"],
+      "correct": 0,
+      "explain": "Not P := P → False. Negation is implication into False."
+    },
+    {
+      "q": "Given `h : False`, what proves any proposition `P`?",
+      "answers": ["False.elim h", "h.elim P", "Classical.em P", "There is no proof of P"],
+      "correct": 0,
+      "explain": "False.elim h : P — ex falso quodlibet: from a contradiction, anything follows."
+    },
+    {
+      "q": "What does `Classical.em P` give you?",
+      "answers": ["A proof of P", "P ∨ ¬P (law of excluded middle)", "¬P → P", "Nothing — it is an axiom of False"],
+      "correct": 1,
+      "explain": "Classical.em P : P ∨ ¬P. It is an axiom (via Classical.choice); #print axioms shows it."
+    },
+    {
+      "q": "Given `h : ¬¬P`, how do you get `P` classically?",
+      "answers": ["h rfl", "Classical.byContradiction (fun hnp => h hnp)", "Or.inl h", "False.elim h"],
+      "correct": 1,
+      "explain": "Double negation elimination: assume ¬P, then h applied to it gives False, so P holds."
+    }
+  ]
+}
+</script>
+<script src="../assets/quiz.js"></script>
+
+<h2>7. Primary source</h2>
+<div class="callout">
+  <p class="callout-title">Recommended reading</p>
+  <p><a href="https://leanprover.github.io/theorem_proving_in_lean4/Axioms-and-Computation/"><strong>TPL4 — Axioms and Computation</strong></a>: how <code>Classical.choice</code> enters, and <code>#print axioms</code>. Logic side: <a href="https://forallx.openlogicproject.org/">forall x</a>, chapters on negation and classical rules.</p>
+</div>
+
+<div class="ask">
+  <p><strong>Ask me anything</strong> — e.g. what <code>#print axioms Classical.em</code> shows, or why constructivists frown at excluded middle. Next: Lesson 0006, <code>decide</code> — when Lean can check a proposition by computation.</p>
+</div>
+
+<p><button class="mark-done" data-mark-done="0005">Mark lesson 0005 as done</button></p>
+
+<div class="lesson-nav">
+  <a href="0004-and-or.html">← 0004 ∧ and ∨</a>
+  <span class="dim"><a href="../index.html">Index</a></span>
+  <a href="0006-decide.html">0006 decide →</a>
+</div>
+
+<script src="../assets/site.js"></script>
+</body>
+</html>

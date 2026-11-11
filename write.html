@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#4f46a8">
+<title>✏️ Write — Lean scratchpad</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<p class="lesson-kicker">Scratchpad</p>
+<h1>✏️ Write with your Pencil</h1>
+<p class="lesson-meta">Draw <strong>one symbol</strong> on the pad — the recognizer suggests what it looks like. Tap a suggestion (or the palette) to insert it into the Lean code below. On iPad you can also write directly into the text area (Scribble).</p>
+
+<div class="write-grid">
+  <div>
+    <div class="pad">
+      <canvas id="pad"></canvas>
+      <div class="pad-hint" id="pad-hint">✏️ draw a symbol here<br>(→, ∧, λ, ∀, 2, x, …)</div>
+    </div>
+    <div class="pad-buttons">
+      <button id="undo" type="button">↩ Undo stroke</button>
+      <button id="clear-pad" type="button">🗑 Clear pad</button>
+    </div>
+    <p class="candidates-label">Recognized (tap to insert):</p>
+    <div class="candidates" id="candidates"></div>
+    <p class="candidates-label">Palette (tap to insert directly):</p>
+    <div class="palette" id="palette"></div>
+  </div>
+  <div>
+    <p class="candidates-label">Lean code (autosaved on this device):</p>
+    <textarea id="scratch" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
+    <div class="pad-buttons">
+      <button id="copy" type="button">📋 Copy code</button>
+      <button id="clear-editor" type="button">🗑 Clear</button>
+    </div>
+    <p class="lesson-meta">Then check it for real: save as <code>playground/MyScratch.lean</code> and run <code>cd playground && lake env lean MyScratch.lean</code>.</p>
+  </div>
+</div>
+
+<div class="lesson-nav">
+  <a href="index.html">← All lessons</a>
+  <a href="lessons/0001-what-is-a-proof.html">Lesson 0001 →</a>
+</div>
+
+<script src="assets/site.js"></script>
+<script src="assets/handwriting.js"></script>
+</body>
+</html>

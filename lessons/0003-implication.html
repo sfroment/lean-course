@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#4f46a8">
+<title>Lesson 0003 — Implication: proving P → Q</title>
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="icon" href="../icons/icon-192.png">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<p class="lesson-kicker">Lesson 0003 · Phase A — Foundations</p>
+<h1>Implication: proving P → Q</h1>
+<p class="lesson-meta">Builds on <a href="0002-functions-and-the-arrow.html">Lesson 0002</a>. 20–30 minutes.</p>
+
+<div class="callout">
+  <p class="callout-title">The one idea</p>
+  <p><strong>A proof of <code>P → Q</code> is a function that turns any proof of <code>P</code> into a proof of <code>Q</code>.</strong> So "assume P, derive Q" is literally "write a function".</p>
+</div>
+
+<h2>1. Term style: just a function</h2>
+<pre><code>example (P Q : Prop) (h : P → Q) (hP : P) : Q := h hP
+
+example (P Q : Prop) : (P → Q) → P → Q := fun h hP => h hP</code></pre>
+<p>Given <code>h : P → Q</code> and <code>hP : P</code>, the proof of <code>Q</code> is simply <code>h hP</code> — function application. And proving <code>(P → Q) → P → Q</code> is the identity function on proofs, written <code>fun h hP => h hP</code>.</p>
+
+<h2>2. Tactic style: <code>intro</code> and <code>exact</code></h2>
+<pre><code>example (P Q : Prop) (h : P → Q) : P → Q := by
+  intro hP
+  exact h hP</code></pre>
+<p>In tactic mode (<code>by</code>), <code>intro hP</code> says "assume <code>P</code>" — it moves the hypothesis into the context and the goal becomes <code>Q</code>. <code>exact t</code> closes the goal with the term <code>t</code> if its type matches exactly.</p>
+
+<h2>3. Chaining implications</h2>
+<pre><code>example (P Q R : Prop) (hPQ : P → Q) (hQR : Q → R) : P → R := by
+  intro hP
+  exact hQR (hPQ hP)</code></pre>
+<p>To prove <code>P → R</code> from <code>P → Q</code> and <code>Q → R</code>: assume <code>hP : P</code>, get <code>hPQ hP : Q</code>, then <code>hQR (hPQ hP) : R</code>. This is pure function composition — transitivity of implication, proven by you.</p>
+
+<h2>4. Try it yourself</h2>
+<pre><code>-- In playground/MyScratch.lean:
+example (P Q R S : Prop) (hPQ : P → Q) (hQR : Q → R) (hRS : R → S) : P → S := by
+  intro hP
+  exact hRS (hQR (hPQ hP))</code></pre>
+
+<h2>5. Check yourself</h2>
+<div class="quiz" id="quiz1"></div>
+<script type="application/json" data-quiz="quiz1">
+{
+  "questions": [
+    {
+      "q": "Given `h : P → Q` and `hP : P`, what term proves `Q`?",
+      "answers": ["hP h", "h hP", "rfl", "intro h"],
+      "correct": 1,
+      "explain": "h hP applies the function h to the proof hP, producing a proof of Q."
+    },
+    {
+      "q": "In tactic mode, what does `intro hP` do when the goal is `P → Q`?",
+      "answers": ["Closes the goal with rfl", "Assumes P: adds hP : P and the goal becomes Q", "Rewrites P to Q", "Deletes the hypothesis hP"],
+      "correct": 1,
+      "explain": "intro moves the left side of → into the context as a hypothesis."
+    },
+    {
+      "q": "What does `exact t` do?",
+      "answers": ["Runs #eval on t", "Closes the goal if t's type matches the goal", "Introduces a new hypothesis t", "Rewrites the goal with t"],
+      "correct": 1,
+      "explain": "exact t closes the current goal with term t, provided the types match exactly."
+    },
+    {
+      "q": "A proof of `P → Q` is, fundamentally, …?",
+      "answers": ["A string of text", "A natural number", "A boolean flag", "A function from proofs of P to proofs of Q"],
+      "correct": 3,
+      "explain": "P → Q is a function type. Proofs of implications are functions — that's the Curry–Howard correspondence in action."
+    }
+  ]
+}
+</script>
+<script src="../assets/quiz.js"></script>
+
+<h2>6. Primary source</h2>
+<div class="callout">
+  <p class="callout-title">Recommended reading</p>
+  <p><a href="https://leanprover.github.io/theorem_proving_in_lean4/Propositions-and-Proofs/"><strong>TPL4 — Propositions and Proofs</strong></a>: exactly this — propositions as types, implication as a function type, <code>intro</code>-style reasoning.</p>
+</div>
+
+<div class="ask">
+  <p><strong>Ask me anything</strong> — e.g. what <code>P → Q → R</code> means without parentheses, or why this is called the Curry–Howard correspondence. Next: Lesson 0004, <code>∧</code> and <code>∨</code>.</p>
+</div>
+
+<p><button class="mark-done" data-mark-done="0003">Mark lesson 0003 as done</button></p>
+
+<div class="lesson-nav">
+  <a href="0002-functions-and-the-arrow.html">← 0002 Functions and →</a>
+  <span class="dim"><a href="../index.html">Index</a></span>
+  <a href="0004-and-or.html">0004 ∧ and ∨ →</a>
+</div>
+
+<script src="../assets/site.js"></script>
+</body>
+</html>

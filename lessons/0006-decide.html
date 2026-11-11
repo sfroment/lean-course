@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#4f46a8">
+<title>Lesson 0006 — Decidable propositions and decide</title>
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="icon" href="../icons/icon-192.png">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<p class="lesson-kicker">Lesson 0006 · Phase A — Foundations</p>
+<h1>Decidable propositions and <code>decide</code></h1>
+<p class="lesson-meta">Builds on <a href="0005-negation-false-classical.html">Lesson 0005</a>. 20–30 minutes.</p>
+
+<div class="callout">
+  <p class="callout-title">The one idea</p>
+  <p><strong>Some propositions can be settled by computation. For those, <code>by decide</code> is a complete proof</strong> — Lean evaluates the proposition to <code>true</code> and the kernel accepts it.</p>
+</div>
+
+<h2>1. <code>decide</code> on numbers and booleans</h2>
+<pre><code>example : 2 + 2 = 4 := by decide
+example : (3 : Nat) &lt; 5 := by decide
+example : ¬ (2 = 3) := by decide
+example : true &amp;&amp; false = false := by decide</code></pre>
+<p>Equality, <code>&lt;</code>, and boolean operations on <code>Nat</code> have <code>Decidable</code> instances: Lean knows how to compute a yes/no answer. <code>decide</code> runs that computation and, if the answer is yes, closes the goal.</p>
+
+<h2>2. Three ways to prove an equality</h2>
+<table>
+  <tr><th>Tool</th><th>When it works</th><th>Example</th></tr>
+  <tr><td><code>rfl</code></td><td>Both sides are <em>definitionally</em> equal (compute to the same thing)</td><td><code>example : 2 + 2 = 4 := rfl</code></td></tr>
+  <tr><td><code>by decide</code></td><td>The proposition is decidable and computes to true</td><td><code>example : 2 * 3 = 6 := by decide</code></td></tr>
+  <tr><td><code>by simp</code></td><td>A simplification lemma closes it (core has a few)</td><td><code>example (n : Nat) : n + 0 = n := by simp</code></td></tr>
+</table>
+<p><code>rfl</code> is about definitional equality; <code>decide</code> is about decidable computation. They overlap a lot on concrete numbers but are different mechanisms. (<code>sorry</code> is the fourth "way" — it never counts as a proof, it just silences the error with a warning.)</p>
+
+<h2>3. Booleans and <code>if</code></h2>
+<pre><code>#eval if true then 1 else 0   -- 1
+
+example (b : Bool) : (if b then 1 else 0) = 1 ∨ (if b then 1 else 0) = 0 := by
+  cases b with
+  | true => exact Or.inl rfl
+  | false => exact Or.inr rfl</code></pre>
+<p><code>Bool</code> is <code>true | false</code>, and <code>if b then x else y</code> branches on it. Note the difference: <code>if</code> lives in <code>Bool</code>/data, while <code>→</code>, <code>∧</code> live in <code>Prop</code>. Propositions are not booleans — that's why <code>decide</code> exists: it bridges them safely for decidable propositions.</p>
+
+<h2>4. Try it yourself</h2>
+<pre><code>-- playground/MyScratch.lean
+example : (7 : Nat) * 8 = 56 := by decide
+example : ¬ ((4 : Nat) &lt; 2) := by decide
+example (n : Nat) : n + 0 = n := by simp</code></pre>
+
+<h2>5. Check yourself</h2>
+<div class="quiz" id="quiz1"></div>
+<script type="application/json" data-quiz="quiz1">
+{
+  "questions": [
+    {
+      "q": "What does `by decide` do?",
+      "answers": ["Downloads a proof", "Computes the decidable proposition; if true, closes the goal", "Assumes the goal is true", "Rewrites with rfl"],
+      "correct": 1,
+      "explain": "decide evaluates the Decidable instance. `example : 2+2=4 := by decide` is a real, kernel-checked proof."
+    },
+    {
+      "q": "Which of these can `decide` prove?",
+      "answers": ["∀ n : Nat, n + 0 = n", "(3 : Nat) < 5", "Any P ∨ ¬P", "2 + 2 = 5"],
+      "correct": 1,
+      "explain": "Only decidable, concrete propositions like `3 < 5`. A ∀ statement needs induction (Lesson 0008); `2+2=5` computes to false."
+    },
+    {
+      "q": "`if b then 1 else 0` branches on what type?",
+      "answers": ["Prop", "Bool", "Nat", "String"],
+      "correct": 1,
+      "explain": "if branches on Bool. Props like `2 < 3` are not booleans — decide connects them for decidable cases."
+    },
+    {
+      "q": "What is the difference between `rfl` and `by decide`?",
+      "answers": ["None at all", "rfl needs definitional equality; decide needs a Decidable instance computing to true", "decide is weaker than rfl", "rfl works on Props only"],
+      "correct": 1,
+      "explain": "Both are kernel-checked. rfl: both sides reduce to the same term. decide: the decision procedure says yes."
+    }
+  ]
+}
+</script>
+<script src="../assets/quiz.js"></script>
+
+<h2>6. Primary source</h2>
+<div class="callout">
+  <p class="callout-title">Recommended reading</p>
+  <p><a href="https://leanprover.github.io/theorem_proving_in_lean4/Inductive-Types/"><strong>TPL4 — Inductive Types</strong></a> (Bool, Nat, and decidable equality) and <a href="https://leanprover.github.io/theorem_proving_in_lean4/Interacting-with-Lean/"><strong>Interacting with Lean</strong></a> (#eval, error messages).</p>
+</div>
+
+<div class="ask">
+  <p><strong>Ask me anything</strong> — e.g. why <code>decide</code> can't prove <code>∀ n, n+0=n</code>, or what <code>Decidable</code> really is. Next: Lesson 0007, rewriting proofs with <code>rw</code>.</p>
+</div>
+
+<p><button class="mark-done" data-mark-done="0006">Mark lesson 0006 as done</button></p>
+
+<div class="lesson-nav">
+  <a href="0005-negation-false-classical.html">← 0005 ¬ and False</a>
+  <span class="dim"><a href="../index.html">Index</a></span>
+  <a href="0007-rewriting.html">0007 rw →</a>
+</div>
+
+<script src="../assets/site.js"></script>
+</body>
+</html>

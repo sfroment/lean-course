@@ -160,3 +160,184 @@ th { background: var(--code-bg); font-family: "Avenir Next", "Segoe UI", system-
   .quiz-answers button { cursor: default; }
   a { color: var(--ink); text-decoration: none; }
 }
+
+/* ---- site: index, progress, lesson cards ---- */
+.hero {
+  background: linear-gradient(135deg, var(--accent-soft), #fff);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 1.4rem 1.5rem;
+  margin: 1.4rem 0;
+}
+.hero h1 { margin-top: 0; }
+.hero p { margin: .4rem 0; }
+
+.progress-wrap {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  height: 14px;
+  overflow: hidden;
+  margin: .6rem 0 .2rem;
+}
+#progress-fill {
+  background: var(--accent);
+  height: 100%;
+  width: 0;
+  transition: width .3s;
+}
+#progress-label {
+  font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  font-size: .8rem; color: var(--muted);
+}
+
+h2.phase {
+  border-bottom: none;
+  font-size: .85rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--muted);
+  margin: 1.8rem 0 .5rem;
+}
+
+.lesson-card {
+  display: flex;
+  align-items: baseline;
+  gap: .8rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  padding: .75rem 1rem;
+  margin: .45rem 0;
+  text-decoration: none;
+  color: var(--ink);
+}
+.lesson-card:hover { border-color: var(--accent); }
+.lesson-card .lesson-n {
+  font-family: "SF Mono", Menlo, monospace;
+  font-size: .8rem; color: var(--accent); min-width: 3.2em;
+}
+.lesson-card .lesson-title { flex: 1; }
+.lesson-card .lesson-check { color: var(--ok); font-weight: 700; }
+.lesson-card.done { background: var(--ok-soft); }
+
+.big-link {
+  display: block;
+  text-align: center;
+  font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  border-radius: 12px;
+  padding: .9rem 1rem;
+  margin: 1rem 0;
+  text-decoration: none;
+  background: #fff;
+}
+.big-link:hover { background: var(--accent-soft); }
+
+button.mark-done, .mark-done {
+  font: inherit;
+  font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  font-weight: 600;
+  border: 2px solid var(--ok);
+  color: var(--ok);
+  background: #fff;
+  border-radius: 10px;
+  padding: .6rem 1.1rem;
+  min-height: 44px;
+  cursor: pointer;
+}
+button.mark-done.done { background: var(--ok-soft); }
+
+/* ---- write.html: pencil scratchpad ---- */
+.write-grid { display: grid; gap: 1rem; }
+@media (min-width: 760px) {
+  .write-grid { grid-template-columns: 1fr 1fr; align-items: start; }
+}
+
+.pad {
+  border: 2px dashed var(--line);
+  border-radius: 14px;
+  background: #fff;
+  position: relative;
+  touch-action: none;           /* essential for Apple Pencil drawing */
+  overflow: hidden;
+}
+.pad canvas { display: block; width: 100%; height: 320px; touch-action: none; }
+@media (min-width: 760px) { .pad canvas { height: 420px; } }
+.pad-hint {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted); font-size: .95rem; pointer-events: none;
+  text-align: center; padding: 0 2rem;
+}
+.pad-hint.hidden { display: none; }
+
+.pad-buttons { display: flex; gap: .5rem; flex-wrap: wrap; margin: .6rem 0; }
+.pad-buttons button, .candidates button, .palette button {
+  font: inherit;
+  font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  border-radius: 8px;
+  min-height: 44px;
+  min-width: 44px;
+  padding: .45rem .8rem;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.pad-buttons button:hover, .candidates button:hover, .palette button:hover {
+  border-color: var(--accent); background: var(--accent-soft);
+}
+
+.candidates { display: flex; gap: .5rem; flex-wrap: wrap; margin: .6rem 0; min-height: 44px; }
+.candidates .cand {
+  font-size: 1.5rem;
+  line-height: 1;
+  padding: .3rem .7rem;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+}
+.candidates .cand.best { border-color: var(--accent); background: var(--accent-soft); }
+.candidates .cand small { display: block; font-size: .6rem; color: var(--muted); text-align: center; }
+.candidates-label { font-size: .8rem; color: var(--muted); font-family: "Avenir Next", sans-serif; margin: .8rem 0 0; }
+
+.palette {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+  gap: .35rem;
+  max-height: 180px;
+  overflow-y: auto;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: .5rem;
+  background: #fff;
+}
+.palette button { font-size: 1.15rem; padding: .2rem 0; }
+
+#scratch {
+  width: 100%;
+  min-height: 220px;
+  font-family: "SF Mono", Menlo, monospace;
+  font-size: .85rem;
+  line-height: 1.5;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: .8rem;
+  background: var(--code-bg);
+  color: var(--ink);
+  resize: vertical;
+}
+
+/* ---- mobile / iOS tweaks ---- */
+@media (max-width: 600px) {
+  html { font-size: 17px; }
+  body { padding: 1.4rem .9rem 6rem; padding-bottom: calc(4rem + env(safe-area-inset-bottom)); }
+  h1 { font-size: 1.4rem; }
+  .quiz-answers button { width: 100%; min-height: 48px; }
+  pre { font-size: .78rem; }
+}
+

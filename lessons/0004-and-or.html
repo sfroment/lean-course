@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#4f46a8">
+<title>Lesson 0004 — Conjunction ∧ and disjunction ∨</title>
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="icon" href="../icons/icon-192.png">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<p class="lesson-kicker">Lesson 0004 · Phase A — Foundations</p>
+<h1>Conjunction ∧ and disjunction ∨</h1>
+<p class="lesson-meta">Builds on <a href="0003-implication.html">Lesson 0003</a>. 20–30 minutes.</p>
+
+<div class="callout">
+  <p class="callout-title">The one idea</p>
+  <p><strong><code>P ∧ Q</code> is proved by giving both proofs; a proof of <code>P ∧ Q</code> gives you both. <code>P ∨ Q</code> is proved by giving one side — and used by case analysis.</strong></p>
+</div>
+
+<h2>1. Conjunction: <code>And</code></h2>
+<pre><code>example (P Q : Prop) (hP : P) (hQ : Q) : P ∧ Q := And.intro hP hQ
+
+example (P Q : Prop) (h : P ∧ Q) : P := h.left
+example (P Q : Prop) (h : P ∧ Q) : Q := h.right</code></pre>
+<p><code>And.intro hP hQ</code> builds <code>P ∧ Q</code> from proofs of both parts. From a proof <code>h : P ∧ Q</code>, the projections <code>h.left</code> and <code>h.right</code> extract the two proofs. (<code>h.1</code> and <code>h.2</code> also work.)</p>
+
+<h2>2. Disjunction: <code>Or</code></h2>
+<pre><code>example (P Q : Prop) (hP : P) : P ∨ Q := Or.inl hP
+example (P Q : Prop) (hQ : Q) : P ∨ Q := Or.inr hQ</code></pre>
+<p>To prove <code>P ∨ Q</code> you only need one side: <code>Or.inl</code> (left) or <code>Or.inr</code> (right).</p>
+
+<h2>3. Using a disjunction: case analysis</h2>
+<pre><code>-- term style:
+example (P Q R : Prop) (h : P ∨ Q) (hP : P → R) (hQ : Q → R) : R :=
+  Or.elim h hP hQ
+
+-- tactic style:
+example (P Q R : Prop) (h : P ∨ Q) (hP : P → R) (hQ : Q → R) : R := by
+  cases h with
+  | inl h1 => exact hP h1
+  | inr h2 => exact hQ h2</code></pre>
+<p>From <code>h : P ∨ Q</code> you can't extract a specific side — but if both cases lead to <code>R</code>, then <code>R</code> holds. <code>Or.elim</code> does this in term style; <code>cases h with | inl … | inr …</code> does it in tactic style, splitting into two goals.</p>
+
+<h2>4. Try it yourself</h2>
+<pre><code>-- ∧ is commutative:
+example (P Q : Prop) (h : P ∧ Q) : Q ∧ P := And.intro h.right h.left
+
+-- a classic: from P ∧ (P → Q) conclude Q (modus ponens)
+example (P Q : Prop) (h : P ∧ (P → Q)) : Q := h.right h.left</code></pre>
+
+<h2>5. Check yourself</h2>
+<div class="quiz" id="quiz1"></div>
+<script type="application/json" data-quiz="quiz1">
+{
+  "questions": [
+    {
+      "q": "Given `hP : P` and `hQ : Q`, what proves `P ∧ Q`?",
+      "answers": ["Or.inl hP", "hP hQ", "And.intro hP hQ", "cases hP"],
+      "correct": 2,
+      "explain": "And.intro takes both proofs and builds the conjunction."
+    },
+    {
+      "q": "Given `h : P ∧ Q`, what is the proof of `Q`?",
+      "answers": ["h.1", "h.left", "hQ", "h.right"],
+      "correct": 3,
+      "explain": "h.right (also written h.2) is the second component — the proof of Q."
+    },
+    {
+      "q": "Given `hQ : Q`, what proves `P ∨ Q`?",
+      "answers": ["Or.inl hQ", "Or.elim hQ", "Or.inr hQ", "And.intro hQ hQ"],
+      "correct": 2,
+      "explain": "Or.inr hQ puts the proof in the right side of the disjunction."
+    },
+    {
+      "q": "What does `cases h with | inl h1 => … | inr h2 => …` do when `h : P ∨ Q`?",
+      "answers": ["Deletes h", "Splits the proof into two goals: one with h1 : P, one with h2 : Q", "Proves P ∨ Q from nothing", "Rewrites Q to P"],
+      "correct": 1,
+      "explain": "Case analysis: each constructor of the disjunction becomes its own goal."
+    }
+  ]
+}
+</script>
+<script src="../assets/quiz.js"></script>
+
+<h2>6. Primary source</h2>
+<div class="callout">
+  <p class="callout-title">Recommended reading</p>
+  <p><a href="https://leanprover.github.io/theorem_proving_in_lean4/Propositions-and-Proofs/"><strong>TPL4 — Propositions and Proofs</strong></a> (the sections on <code>∧</code> and <code>∨</code>), plus <a href="https://forallx.openlogicproject.org/">forall x</a> chapters on natural deduction for ∧ and ∨ if you want the logic side.</p>
+</div>
+
+<div class="ask">
+  <p><strong>Ask me anything</strong> — e.g. why there's no way to extract a definite side from <code>P ∨ Q</code> constructively. Next: Lesson 0005, negation ¬ and False.</p>
+</div>
+
+<p><button class="mark-done" data-mark-done="0004">Mark lesson 0004 as done</button></p>
+
+<div class="lesson-nav">
+  <a href="0003-implication.html">← 0003 Implication</a>
+  <span class="dim"><a href="../index.html">Index</a></span>
+  <a href="0005-negation-false-classical.html">0005 ¬ and False →</a>
+</div>
+
+<script src="../assets/site.js"></script>
+</body>
+</html>

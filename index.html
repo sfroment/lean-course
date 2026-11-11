@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#4f46a8">
+<title>Lean from the Base</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<p class="lesson-kicker">Course</p>
+<h1>Lean from the Base</h1>
+<p class="lesson-meta">Prove and discover mathematics yourself, in Lean 4 — rebuilt from axioms, nothing taken on faith. Works offline; add to your home screen on iPhone/iPad.</p>
+
+<div class="hero">
+  <p><strong>Mission:</strong> learn Lean 4 from the base so you can <em>prove</em> known math and eventually <em>discover</em> new theorems on your own. Full story in <a href="MISSION.md">MISSION.md</a>, sources in <a href="RESOURCES.md">RESOURCES.md</a>, curriculum in <a href="ROADMAP.md">ROADMAP.md</a>.</p>
+  <div class="progress-wrap"><div id="progress-fill"></div></div>
+  <div id="progress-label">0 / 0 lessons done</div>
+</div>
+
+<a class="big-link" href="write.html">✏️ Write — Apple Pencil scratchpad (draw symbols → Lean code)</a>
+
+<div id="lesson-list"></div>
+
+<h2>Practice</h2>
+<p>All lessons are checked against real Lean. Hands-on code goes in <code>playground/</code>:</p>
+<pre><code>cd playground
+lake env lean MyScratch.lean</code></pre>
+<p>Every snippet in every lesson is machine-verified by <code>scripts/verify-lessons.py</code>.</p>
+
+<h2>Reference</h2>
+<ul>
+  <li><a href="reference/01-lean-core-cheatsheet.html">Lean core cheat sheet</a></li>
+  <li><a href="GLOSSARY.md">Glossary</a></li>
+  <li><a href="RESOURCES.md">Resources</a> — TPL4, Mathematics in Lean, Natural Number Game, forall x, mathlib…</li>
+</ul>
+
+<div class="ask">
+  <p><strong>Ask your teacher anything</strong> in the pi session that serves this course — questions about a lesson, a weird error, or what to learn next.</p>
+</div>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

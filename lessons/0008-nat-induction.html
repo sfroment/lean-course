@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#4f46a8">
+<title>Lesson 0008 — Natural numbers and induction</title>
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="icon" href="../icons/icon-192.png">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<p class="lesson-kicker">Lesson 0008 · Phase A — Foundations</p>
+<h1>Natural numbers and induction</h1>
+<p class="lesson-meta">Builds on <a href="0007-rewriting.html">Lesson 0007</a>. 30–40 minutes — this is the first <em>real</em> proof technique.</p>
+
+<div class="callout">
+  <p class="callout-title">The one idea</p>
+  <p><strong>To prove something for every natural number, prove it for <code>0</code>, and prove that if it holds for <code>n</code> then it holds for <code>n+1</code>.</strong> That's induction — and it's built into the definition of <code>Nat</code> itself.</p>
+</div>
+
+<h2>1. Nat and its core lemmas</h2>
+<pre><code>#check Nat.succ_add   -- n.succ + m = (n + m).succ
+#check Nat.add_zero   -- n + 0 = n
+#check Nat.add_succ   -- n + m.succ = (n + m).succ
+#check Nat.zero_add   -- 0 + n = n</code></pre>
+<p><code>Nat</code> is built from <code>0</code> and <code>succ</code> (i.e. <code>n+1</code>). Lean core already proves the basic facts above — we can <em>use</em> them with <code>rw</code> while we learn to prove our own.</p>
+
+<h2>2. Your first induction</h2>
+<pre><code>example (n : Nat) : n + 0 = n := by
+  induction n with
+  | zero => rfl
+  | succ n ih => rw [Nat.succ_add, ih]</code></pre>
+<p>How to read it:</p>
+<ul>
+  <li><code>induction n with</code> splits into two goals: the <code>zero</code> case and the <code>succ n ih</code> case, where <code>ih</code> is the induction hypothesis — the statement already proved for <code>n</code>.</li>
+  <li><code>zero</code>: goal <code>0 + 0 = 0</code>, closed by <code>rfl</code>.</li>
+  <li><code>succ</code>: goal <code>(n+1) + 0 = n+1</code>. <code>rw [Nat.succ_add]</code> turns it into <code>(n + 0) + 1 = n + 1</code>… in arrow form <code>succ (n + 0) = succ n</code>; then <code>rw [ih]</code> replaces <code>n + 0</code> by <code>n</code>, giving <code>succ n = succ n</code>, closed automatically.</li>
+</ul>
+<p>(Of course core already has this as <code>Nat.add_zero</code>: <code>example (n : Nat) : n + 0 = n := Nat.add_zero n</code>. We re-prove it to learn the technique — remember the mission: everything gets re-proven.)</p>
+
+<h2>3. Stretch: commutativity of addition</h2>
+<pre><code>example (a b : Nat) : a + b = b + a := by
+  induction a with
+  | zero => rw [Nat.zero_add, Nat.add_zero]
+  | succ a ih => rw [Nat.succ_add, ih, Nat.add_succ]</code></pre>
+<p>Induction on <code>a</code>, using <code>b</code> fixed. Zero case: <code>0 + b = b + 0</code> — rewrite both sides to <code>b</code>. Step case: <code>(a+1) + b = b + (a+1)</code> — peel the succ off the left, use <code>ih</code>, peel the succ off the right with <code>Nat.add_succ</code>.</p>
+
+<h2>4. Try it yourself</h2>
+<pre><code>-- playground/MyScratch.lean
+example (n : Nat) : 0 + n = n := by
+  induction n with
+  | zero => rfl
+  | succ n ih => rw [Nat.zero_add, ih]</code></pre>
+<p>(This one is easy because core's <code>Nat.zero_add</code> does the heavy lifting in the step. For a real workout, try <code>example (n : Nat) : n * 1 = n</code> or <code>2 * n = n + n</code> — ask me for hints!)</p>
+
+<h2>5. Check yourself</h2>
+<div class="quiz" id="quiz1"></div>
+<script type="application/json" data-quiz="quiz1">
+{
+  "questions": [
+    {
+      "q": "In `induction n with | zero => … | succ n ih => …`, what is `ih`?",
+      "answers": ["A proof of False", "The statement for n: the induction hypothesis", "A new function n+1 → n", "The base case 0"],
+      "correct": 1,
+      "explain": "ih is the goal already proven at n — you may use it to prove the goal at n+1."
+    },
+    {
+      "q": "Why is `example (n : Nat) : n + 0 = n := by induction n …` needed at all, when `Nat.add_zero` exists?",
+      "answers": ["It isn't — rfl works", "To learn induction; in this course we re-prove core lemmas ourselves", "Nat.add_zero is not in core", "decide can do it"],
+      "correct": 1,
+      "explain": "Mission rule: we re-prove everything. Later we'll also learn when to reuse mathlib instead."
+    },
+    {
+      "q": "What does `Nat.succ_add n m` state?",
+      "answers": ["n + m = n.succ + m", "n.succ + m = (n + m).succ", "n + m.succ = n.succ + m", "0 + n = n"],
+      "correct": 1,
+      "explain": "succ_add: (n+1) + m = (n + m) + 1. Used with rw in the succ case of induction."
+    },
+    {
+      "q": "In the proof of `a + b = b + a`, why do we induct on `a` and not on `a + b`?",
+      "answers": ["Because b is smaller", "Because induction must run on a single variable that Nat is built from", "It makes no difference", "Because decide requires it"],
+      "correct": 1,
+      "explain": "Induction follows the structure of one variable — 0 / succ — like the definition of Nat."
+    }
+  ]
+}
+</script>
+<script src="../assets/quiz.js"></script>
+
+<h2>6. Primary source</h2>
+<div class="callout">
+  <p class="callout-title">Recommended reading</p>
+  <p><a href="https://leanprover.github.io/theorem_proving_in_lean4/Induction-and-Recursion/"><strong>TPL4 — Induction and Recursion</strong></a>: <code>induction</code>, <code>Nat.rec</code>, and how induction is really recursion. Also try the <a href="https://adam.math.hhu.de/">Natural Number Game</a> — it teaches exactly this, as a game.</p>
+</div>
+
+<div class="ask">
+  <p><strong>Ask me anything</strong> — induction feels weird at first; ask me to walk through the succ case step by step, or to show <code>Nat.rec</code>. Next: Lesson 0009, the tactic toolkit (<code>have</code>, <code>calc</code>, <code>apply</code>…).</p>
+</div>
+
+<p><button class="mark-done" data-mark-done="0008">Mark lesson 0008 as done</button></p>
+
+<div class="lesson-nav">
+  <a href="0007-rewriting.html">← 0007 rw</a>
+  <span class="dim"><a href="../index.html">Index</a></span>
+  <a href="0009-tactic-toolkit.html">0009 Tactic toolkit →</a>
+</div>
+
+<script src="../assets/site.js"></script>
+</body>
+</html>

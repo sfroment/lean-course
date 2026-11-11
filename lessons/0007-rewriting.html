@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#4f46a8">
+<title>Lesson 0007 — Rewriting with rw and the equality API</title>
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="icon" href="../icons/icon-192.png">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<p class="lesson-kicker">Lesson 0007 · Phase A — Foundations</p>
+<h1>Rewriting with <code>rw</code> and the equality API</h1>
+<p class="lesson-meta">Builds on <a href="0006-decide.html">Lesson 0006</a>. 20–30 minutes.</p>
+
+<div class="callout">
+  <p class="callout-title">The one idea</p>
+  <p><strong>An equality <code>h : a = b</code> is a license to replace <code>a</code> by <code>b</code> anywhere.</strong> <code>rw [h]</code> does that replacement in the goal; <code>h.trans</code>, <code>h.symm</code>, <code>congrArg</code> manipulate equalities as values.</p>
+</div>
+
+<h2>1. The equality API</h2>
+<pre><code>example (a b c : Nat) (h : a = b) (h2 : b = c) : a = c := h.trans h2
+example (a b : Nat) (h : a = b) : b = a := h.symm</code></pre>
+<p>Every equality has methods: <code>h.trans h2</code> chains (<code>a = b</code> and <code>b = c</code> give <code>a = c</code>), <code>h.symm</code> flips it. These are just theorems about <code>Eq</code> applied to <code>h</code>.</p>
+
+<h2>2. The <code>rw</code> tactic</h2>
+<pre><code>example (a b c : Nat) (h : a = b) (h2 : b = c) : a = c := by
+  rw [h, h2]</code></pre>
+<p><code>rw [h]</code> rewrites occurrences of the left side of <code>h</code> into the right side, in the goal. <code>rw [h, h2]</code> does both in sequence: goal <code>a = c</code> → <code>b = c</code> → <code>c = c</code>, which closes by reflexivity automatically.</p>
+
+<h2>3. Rewriting under a function (congruence)</h2>
+<pre><code>example (f : Nat → Nat) (a b : Nat) (h : a = b) : f a = f b := congrArg f h
+
+example (f : Nat → Nat) (a b : Nat) (h : a = b) : f a = f b := by
+  rw [h]</code></pre>
+<p>If <code>a = b</code> then <code>f a = f b</code> for any function <code>f</code>. <code>congrArg f h</code> builds this in term style; <code>rw [h]</code> does it in the goal.</p>
+
+<h2>4. Try it yourself</h2>
+<pre><code>-- playground/MyScratch.lean
+example (a b : Nat) (h : a = b) : a + 0 = b + 0 := by
+  rw [h]
+
+example (a b c d : Nat) (h : a = b) (h2 : c = d) : a + c = b + d := by
+  rw [h, h2]</code></pre>
+
+<h2>5. Check yourself</h2>
+<div class="quiz" id="quiz1"></div>
+<script type="application/json" data-quiz="quiz1">
+{
+  "questions": [
+    {
+      "q": "Given `h : a = b` and `h2 : b = c`, what proves `a = c` in term style?",
+      "answers": ["h.symm", "h.trans h2", "rw h", "h2.trans h"],
+      "correct": 1,
+      "explain": "h.trans h2 : a = c — transitivity of equality."
+    },
+    {
+      "q": "What does `rw [h]` do to the goal when `h : a = b`?",
+      "answers": ["Replaces a with b in the goal", "Replaces b with a in the goal", "Deletes h from the context", "Proves the goal immediately"],
+      "correct": 0,
+      "explain": "rw [h] rewrites left-to-right: every a in the goal becomes b. (rw [← h] goes the other way.)"
+    },
+    {
+      "q": "Given `h : a = b`, what proves `f a = f b` for a function f?",
+      "answers": ["congrArg f h", "h.symm", "rfl", "False.elim h"],
+      "correct": 0,
+      "explain": "congrArg f h — congruence: equal inputs give equal outputs. Also `by rw [h]`."
+    },
+    {
+      "q": "After `rw [h, h2]` on goal `a = c` with `h : a = b`, `h2 : b = c`, the goal becomes…?",
+      "answers": ["a = c (unchanged)", "c = c, closed by rfl automatically", "b = b", "False"],
+      "correct": 1,
+      "explain": "a = c → b = c → c = c, and rw closes reflexive goals automatically."
+    }
+  ]
+}
+</script>
+<script src="../assets/quiz.js"></script>
+
+<h2>6. Primary source</h2>
+<div class="callout">
+  <p class="callout-title">Recommended reading</p>
+  <p><a href="https://leanprover.github.io/theorem_proving_in_lean4/Tactics/"><strong>TPL4 — Tactics</strong></a> (the <code>rw</code> section) and <a href="https://leanprover.github.io/theorem_proving_in_lean4/Quantifiers-and-Equality/"><strong>Quantifiers and Equality</strong></a> for the <code>Eq</code> API.</p>
+</div>
+
+<div class="ask">
+  <p><strong>Ask me anything</strong> — e.g. what <code>rw [← h]</code> means, or why rw closes <code>c = c</code> by itself. Next: Lesson 0008, the big one — induction on the natural numbers.</p>
+</div>
+
+<p><button class="mark-done" data-mark-done="0007">Mark lesson 0007 as done</button></p>
+
+<div class="lesson-nav">
+  <a href="0006-decide.html">← 0006 decide</a>
+  <span class="dim"><a href="../index.html">Index</a></span>
+  <a href="0008-nat-induction.html">0008 Nat induction →</a>
+</div>
+
+<script src="../assets/site.js"></script>
+</body>
+</html>
