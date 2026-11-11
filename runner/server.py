@@ -52,6 +52,22 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/health":
             self._json(200, {"ok": True})
+        elif self.path == "/debug":
+            import shutil
+            info = {"lean_which": shutil.which("lean")}
+            try:
+                r = subprocess.run(["lean", "--version"], capture_output=True, text=True, timeout=20)
+                info["version"] = {"rc": r.returncode, "out": (r.stdout + r.stderr)[:300]}
+            except Exception as e:
+                info["version"] = {"err": str(e)}
+            try:
+                r = subprocess.run(
+                    ["sh", "-c", "ulimit -a; echo pids.max=$(cat /sys/fs/cgroup/pids.max 2>/dev/null); echo memory.max=$(cat /sys/fs/cgroup/memory.max 2>/dev/null); nproc"],
+                    capture_output=True, text=True, timeout=10)
+                info["env"] = r.stdout
+            except Exception as e:
+                info["env"] = {"err": str(e)}
+            self._json(200, info)
         else:
             self._json(404, {"error": "not found"})
 
