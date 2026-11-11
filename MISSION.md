@@ -9,8 +9,9 @@ Sacha wants to reach a level where he can formalize — prove and even *discover
 - Reads and writes Lean 4 comfortably: terms, types, tactics, `example`s that compile
 - Understands the logical foundations as formalized in Lean/mathlib: propositional and predicate logic, type theory, sets, functions, numbers
 - Can state and prove theorems that are new *to him* — small at first, then real ones — without copying proofs
-- Eventually works inside mathlib itself: searches existing lemmas, proves new ones, contributes
+- Has built his **own library of proofs from core Lean** (his own "mini-mathlib" in `playground/`), covering logic, numbers, algebra, analysis… — never importing existing proofs
 - Can discover: given a definition, explores its consequences and finds true statements worth proving
+- Compares his proofs against mathlib/MIL **by reading only**, to learn different approaches — never by importing
 
 ## Constraints
 
@@ -20,6 +21,6 @@ Sacha wants to reach a level where he can formalize — prove and even *discover
 
 ## Out of scope (for now)
 
-- Treating mathlib as a black box before the core is understood
+- **Reusing existing proofs — permanently, not just for now.** No `import Mathlib` in this workspace, ever. mathlib/MIL/TPL4 are reading references only (see learning-records/0002). The ▶ Run backend is core-Lean-only, so it physically cannot import mathlib.
 - Community participation (Zulip) until later — he is open to joining when ready
 - A single fixed end-goal theorem: the goal is the capability itself, across number theory, algebra, analysis, geometry/topology, and the foundations

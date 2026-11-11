@@ -3,8 +3,8 @@
 The full curriculum for the [mission](./MISSION.md). Lessons are pregenerated in
 `lessons/` (see `lessons/manifest.json`); each one's Lean snippets are machine-checked
 by `scripts/verify-lessons.py`. Phases A is pure core Lean — no mathlib download needed.
-From phase B on, the playground gains a mathlib dependency and lessons follow
-*Mathematics in Lean*.
+From phase B on, the playground stays pure core Lean — we build our own foundations
+(no mathlib dependency, ever; see learning-records/0002). MIL/TPL4 are reading references.
 
 ## Phase A — Lean & logic from the base ✅ (generated, core-verified)
 
@@ -12,12 +12,15 @@ From phase B on, the playground gains a mathlib dependency and lessons follow
 0004 ∧ and ∨ · 0005 ¬, False, classical logic · 0006 `decide` · 0007 `rw` and equality ·
 0008 Nat and induction · 0009 Tactic toolkit (have, calc, apply, show, assumption)
 
-## Phase B — Mathlib foundations (next)
+## Phase B — Our own foundations (pure core Lean, NO mathlib) (next)
 
-- Setting up mathlib in the playground; `import Mathlib`
-- MIL ch. 1–2: logic in mathlib, sets
-- MIL ch. 3: functions and relations (`Function`, `Set`, injective/surjective/bijective)
-- Orders, equivalence relations, quotients
+Per LR-0002 we never import existing proofs. The playground stays dependency-free;
+mathlib/MIL/TPL4 are *reading references only*.
+
+- Sets as predicates (`α → Prop`), membership, subset, union/intersection — our own lemmas
+- Functions: injective/surjective/bijective, compositions, inverses — proved by us
+- Relations, orders, equivalence relations, quotients — built from core
+- Reading reference for structure/ideas only: MIL ch. 1–3, TPL4
 
 ## Phase C — Numbers
 
