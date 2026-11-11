@@ -42,6 +42,12 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.addEventListener("click", () => {
           answered += 1;
           progress.textContent = `${answered} / ${total} answered`;
+          try { // record the answer for later review by the teacher
+            const key = "lean-course-quiz:" + location.pathname + "#" + cfg.dataset.quiz;
+            const arr = JSON.parse(localStorage.getItem(key) || "[]");
+            arr.push({ q: qi + 1, question: q.q, chosen: ai, correctIndex: q.correct, wasCorrect: ai === q.correct, at: new Date().toISOString() });
+            localStorage.setItem(key, JSON.stringify(arr));
+          } catch (e) { /* storage unavailable — quiz still works */ }
           answers.querySelectorAll("button").forEach((b) => (b.disabled = true));
           if (ai === q.correct) {
             btn.classList.add("correct");

@@ -341,3 +341,82 @@ button.mark-done.done { background: var(--ok-soft); }
   pre { font-size: .78rem; }
 }
 
+/* ---- access gate (gate.html) ---- */
+.gate-wrap {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: linear-gradient(160deg, var(--accent-soft), var(--paper));
+}
+.gate-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 2rem 1.8rem;
+  width: 100%;
+  max-width: 22rem;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(26, 29, 35, .08);
+}
+.gate-lock { font-size: 2.2rem; }
+.gate-card h1 { font-size: 1.25rem; margin: .6rem 0 .2rem; }
+.gate-sub { color: var(--muted); font-size: .9rem; margin: .2rem 0 1.2rem; }
+#gate-code {
+  width: 100%;
+  font: inherit;
+  padding: .6rem .8rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin-bottom: .7rem;
+  min-height: 44px;
+}
+#gate-code:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+.gate-card button[type="submit"] {
+  width: 100%;
+  font: inherit;
+  font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  font-weight: 600;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: .65rem;
+  min-height: 44px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.gate-error { color: var(--bad); font-size: .85rem; min-height: 1.2em; margin: .6rem 0 0; }
+
+/* ---- floating lock + export buttons ---- */
+#lock-btn {
+  position: fixed;
+  right: .8rem;
+  bottom: calc(.8rem + env(safe-area-inset-bottom));
+  z-index: 60;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: #fff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .12);
+  font-size: 1.05rem;
+  cursor: pointer;
+}
+.tool-btn {
+  font: inherit;
+  font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  font-weight: 600;
+  border: 2px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  border-radius: 10px;
+  padding: .5rem 1rem;
+  min-height: 44px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.tool-btn:hover { border-color: var(--accent); color: var(--accent); }
+

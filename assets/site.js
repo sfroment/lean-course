@@ -65,9 +65,58 @@
     }
   }
 
+  /* Export everything the learner has done on this device (quiz answers with
+   * correctness, lessons marked done, pencil scratchpad) as one JSON file.
+   * Drop it in chat or commit it under my-data/ — the teacher reviews errors
+   * and runs the Lean code for real. */
+  function collectLearnerData() {
+    const out = { exportedAt: new Date().toISOString(), page: location.href };
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (!k || !k.startsWith("lean-course-") || k === "lean-course-auth") continue;
+      const v = localStorage.getItem(k);
+      try { out[k.slice("lean-course-".length)] = JSON.parse(v); }
+      catch { out[k.slice("lean-course-".length)] = v; }
+    }
+    return out;
+  }
+
+  function wireExport() {
+    document.querySelectorAll("[data-export]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const data = collectLearnerData();
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = `lean-answers-${new Date().toISOString().replace(/[:.]/g, "-")}.json`;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+        btn.textContent = "⬇ Exported ✓ (check downloads)";
+        setTimeout(() => (btn.textContent = "⬇ Export my answers (JSON)"), 2500);
+      });
+    });
+  }
+
+  function wireLock() {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.id = "lock-btn";
+    b.textContent = "🔒";
+    b.title = "Lock this site (clear access code)";
+    b.addEventListener("click", () => {
+      try { localStorage.removeItem("lean-course-auth"); } catch (e) {}
+      const s = document.querySelector('script[src$="assets/site.js"]');
+      const base = s ? s.src.replace(/assets\/site\.js(\?.*)?$/, "") : "./";
+      location.href = base + "gate.html";
+    });
+    document.body.appendChild(b);
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     renderIndex();
     wireMarkDone();
+    wireExport();
+    wireLock();
     registerSW();
   });
 })();
